@@ -1,0 +1,7 @@
+# Reference versions used on the experiment host.
+# Install the package first with: python -m pip install -e '.[native,gurobi]'
+z3-solver==4.15.4.0
+gurobipy==13.0.2
+pyomo==6.10.1
+pulp==3.3.2
+ortools==9.14.6206

@@ -1,0 +1,45 @@
+{
+  "case_id": "nl4opt_test:67",
+  "model": "Qwen2.5-32B",
+  "real_benchmark_case": true,
+  "without_reference_target": "review",
+  "selected_target": "written_model",
+  "revision_origin": "manual_review_not_LLM_trial",
+  "llm_calls": 0,
+  "code_unchanged": true,
+  "code_sha256": "6649d72f4d30ff5d946faa91069b563b3653ac196de2d886ea6fbcda52db02a6",
+  "before_pair": "REFUTED",
+  "after_pair": "CERTIFIED",
+  "after_result": "CERTIFIED",
+  "accepted": true,
+  "native_returned_result": {
+    "objective_value": 580.0,
+    "assignment": {
+      "new_trips": 2.0,
+      "old_trips": 13.0
+    }
+  },
+  "queries": {
+    "written_not_program": {
+      "status": "unsat",
+      "assignment": null
+    },
+    "program_not_written": {
+      "status": "sat",
+      "assignment": {
+        "new_trips": "15",
+        "old_trips": "10"
+      }
+    }
+  },
+  "worked_witness": {
+    "new_trips": 15,
+    "old_trips": 10
+  },
+  "native_replay_of_worked_witness": {
+    "written": false,
+    "program": true,
+    "reviewed_reference": true
+  },
+  "evaluation_only_reference_value": 580
+}

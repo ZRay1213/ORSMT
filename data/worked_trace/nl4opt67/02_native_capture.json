@@ -1,0 +1,101 @@
+{
+  "status": "CAPTURED",
+  "solve_error": null,
+  "returned": {
+    "objective_value": 580.0,
+    "assignment": {
+      "new_trips": 2.0,
+      "old_trips": 13.0
+    }
+  },
+  "ir": {
+    "variables": [
+      {
+        "name": "new_trips",
+        "type": "int",
+        "lb": -0.0,
+        "ub": 15.0
+      },
+      {
+        "name": "old_trips",
+        "type": "int",
+        "lb": -0.0,
+        "ub": null
+      }
+    ],
+    "constraints": [
+      {
+        "kind": "linear",
+        "name": "gifts_constraint",
+        "lhs": [
+          {
+            "coef": "50.0",
+            "var": "new_trips"
+          },
+          {
+            "coef": "70.0",
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": "1000.0"
+      },
+      {
+        "kind": "linear",
+        "name": "old_trips_constraint",
+        "lhs": [
+          {
+            "coef": "-0.4",
+            "var": "new_trips"
+          },
+          {
+            "coef": "0.6",
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": "0.0"
+      },
+      {
+        "kind": "linear",
+        "name": "non_negative_new_trips",
+        "lhs": [
+          {
+            "coef": "1.0",
+            "var": "new_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": "0.0"
+      },
+      {
+        "kind": "linear",
+        "name": "non_negative_old_trips",
+        "lhs": [
+          {
+            "coef": "1.0",
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": "0.0"
+      }
+    ],
+    "objective": {
+      "sense": "min",
+      "lhs": [
+        {
+          "coef": "30.0",
+          "var": "new_trips"
+        },
+        {
+          "coef": "40.0",
+          "var": "old_trips"
+        }
+      ],
+      "const": "0.0"
+    },
+    "n_quadratic": 0
+  },
+  "n_models_built": 1
+}

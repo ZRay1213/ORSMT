@@ -1,0 +1,7 @@
+{
+  "id": "integration_integer_minimum",
+  "question": "Choose an integer x between 0 and 10, with x at least 2. Minimize x.",
+  "formulation": "Minimize x, subject to x >= 3 and 0 <= x <= 10, where x is an integer.",
+  "formulation_format": "text",
+  "code": "import json\nimport gurobipy as gp\nm=gp.Model()\nx=m.addVar(vtype=gp.GRB.INTEGER,lb=0,ub=10,name='x')\nm.addConstr(x>=3)\nm.setObjective(x,gp.GRB.MINIMIZE)\nm.optimize()\nprint(json.dumps({'objective_value':float(m.ObjVal),'assignment':{'x':x.X}}))"
+}

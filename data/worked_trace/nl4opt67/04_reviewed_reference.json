@@ -1,0 +1,88 @@
+{
+  "origin": "manually_reviewed_from_original_NL4Opt_67_source_not_LLM_generated",
+  "source_quote": "at least 40% of all trips must be made by the old company",
+  "formulation": {
+    "variables": [
+      {
+        "name": "new_trips",
+        "type": "int",
+        "lb": 0,
+        "ub": 15
+      },
+      {
+        "name": "old_trips",
+        "type": "int",
+        "lb": 0,
+        "ub": null
+      }
+    ],
+    "constraints": [
+      {
+        "name": "gifts_constraint",
+        "lhs": [
+          {
+            "coef": 50,
+            "var": "new_trips"
+          },
+          {
+            "coef": 70,
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 1000
+      },
+      {
+        "name": "old_trips_constraint",
+        "lhs": [
+          {
+            "var": "old_trips",
+            "coef": "3"
+          },
+          {
+            "var": "new_trips",
+            "coef": "-2"
+          }
+        ],
+        "op": ">=",
+        "rhs": "0"
+      },
+      {
+        "name": "non_negative_new_trips",
+        "lhs": [
+          {
+            "coef": 1,
+            "var": "new_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 0
+      },
+      {
+        "name": "non_negative_old_trips",
+        "lhs": [
+          {
+            "coef": 1,
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 0
+      }
+    ],
+    "objective": {
+      "sense": "min",
+      "lhs": [
+        {
+          "coef": 30,
+          "var": "new_trips"
+        },
+        {
+          "coef": 40,
+          "var": "old_trips"
+        }
+      ]
+    }
+  },
+  "review": "Full two-variable model checked against the source; proportion row corrected; other requirements unchanged."
+}

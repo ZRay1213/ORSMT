@@ -1,0 +1,125 @@
+{
+  "schema": "orsmt-milp-scope-v3",
+  "input_bank": "SOURCE_ROOT/data/paper_benchmark_items_v2.jsonl",
+  "input_sha256": "52d8372079b5dfb419cc3bfdf4a734bff8bc69f706b7c6cb432371dc27c0bef0",
+  "total": 5136,
+  "eligible": 3034,
+  "scope": "LP, integer linear and mixed-integer linear formulations; single linear objective",
+  "selection_basis": "reference matrices, reviewed generators, or original release type evidence",
+  "not_used_for_selection": [
+    "LLM checkpoint",
+    "generated code",
+    "verification verdict",
+    "answer availability",
+    "objective agreement",
+    "runtime",
+    "problem size"
+  ],
+  "candidate_support": "Scope admission is not candidate correctness or successful translation. Retain all selected IDs, including missing or unsupported LLM outputs.",
+  "native_policy": "Keep all native IDs inventoried. No native instance enters the active population until its complete supported MILP representation is available.",
+  "by_source": {
+    "bwor": {
+      "eligible": 75,
+      "excluded": 5,
+      "pending": 2
+    },
+    "complexor": {
+      "eligible": 18,
+      "excluded": 0,
+      "pending": 0
+    },
+    "industryor": {
+      "eligible": 98,
+      "excluded": 1,
+      "pending": 1
+    },
+    "logior": {
+      "eligible": 76,
+      "excluded": 16,
+      "pending": 0
+    },
+    "mamo_complex_test": {
+      "eligible": 211,
+      "excluded": 0,
+      "pending": 0
+    },
+    "mamo_easy_test": {
+      "eligible": 652,
+      "excluded": 0,
+      "pending": 0
+    },
+    "nl4opt_test": {
+      "eligible": 230,
+      "excluded": 0,
+      "pending": 0
+    },
+    "nlp4lp": {
+      "eligible": 242,
+      "excluded": 0,
+      "pending": 0
+    },
+    "optengine_canonical": {
+      "eligible": 0,
+      "excluded": 1810,
+      "pending": 0
+    },
+    "optibench": {
+      "eligible": 422,
+      "excluded": 183,
+      "pending": 0
+    },
+    "optmath_bench": {
+      "eligible": 132,
+      "excluded": 34,
+      "pending": 0
+    },
+    "text2opt_template": {
+      "eligible": 630,
+      "excluded": 50,
+      "pending": 0
+    },
+    "text2opt_unstructured": {
+      "eligible": 248,
+      "excluded": 0,
+      "pending": 0
+    }
+  },
+  "native_inventory": {
+    "dcp": {
+      "pending": 164
+    },
+    "frontieror": {
+      "pending": 1000,
+      "excluded": 72
+    }
+  },
+  "reasons": {
+    "documented_linear_release": 1353,
+    "release_linear_type": 671,
+    "released_nonlinear_or_conic_formulation": 205,
+    "type_requires_reference_review": 3,
+    "reviewed_linear_source_structure": 132,
+    "explicit_quadratic_or_conic_source_constraint": 34,
+    "explicit_linear_matrix": 878,
+    "release_MIQP": 50,
+    "user_excluded_source": 1810
+  },
+  "output_sha256": {
+    "excluded.jsonl": "cb7d19832d23f08b44bf7d34421f3c6550394325d71969f63fd43f9cdc3a5250",
+    "eligible_ids.json": "ef1d837de1bc9a0ed4e45edd489205e6362dd8a738c5a161a7144650b455f72c",
+    "eligible.jsonl": "03ee74835cf7d2f0b47408d8f5deb8868747249d43ff437ce2252728e9e8baec",
+    "native_inventory.jsonl": "12159799d3f83440f89c50dc21f2c09be8bf61e388c6819e4a763ef68916eecb",
+    "decisions.jsonl": "a8168b5aac457aefdca66bd84096c57b1d7e6614162c2ed6b933bd14890c72cc",
+    "optmath_review.jsonl": "4430309fae0112a9b8e6c341d98121ac8fa940932f7583f48299ab06170fb1f2",
+    "native_additional_files.json": "03b839ca592e39bdb8bfe110a108190c400cb7973f8e62bcded154cb34a28485",
+    "pending.jsonl": "2628a882d06b4b3ffbc32eea15435af74e15af04c8cf2313ec24c2f5c9377753",
+    "provenance.json": "936474e98b8da8b2d4c8ee3326b359fddfe07315d1bd277de4c5b6ec00df5c37",
+    "source_evidence/optmath_official.json": "c5dbc2bf14995b880d13e306ff54ae81b603f07b565a31e52248533848ad3a93"
+  },
+  "parent_manifest": "SOURCE_ROOT/data/milp_benchmark_v2/manifest.json",
+  "parent_manifest_sha256": "cbebc8ef6a4560a22a9fcda2f8ee360d475dc63c67d0548f393a2e2f4a4d944f",
+  "excluded_sources": [
+    "optengine_canonical"
+  ],
+  "scope_change": "Review all 166 official OptMATH questions: admit 132 linear/linearizable instances, exclude 34 quadratic/conic instances. OPT-Engine stays excluded."
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/armbruster2012/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/bierwirth2017/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/borndorfer2007/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/engineer2012/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/guo2021/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/huisman2005/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/nagy2015/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/oliveira2020/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/large_instance_11.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/large_instance_21.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/large_instance_31.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/large_instance_41.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/large_instance_51.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ostrowski2012/instance/tiny_instance.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ozturk2020/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/pecin2017/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/potthoff2010/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ropke2009/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/rothenbacher2018/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/ruiz2007/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/segundo2019/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/spliet2015/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  },
+  {
+    "path": "SOURCE_ROOT/external/FrontierOR/frontier-or/vidal2011/instance/tiny_instance_2.json",
+    "reason": "outside_existing_native_instance_protocol"
+  }
+]
