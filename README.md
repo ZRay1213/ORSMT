@@ -20,9 +20,9 @@ baselines, host-system comparisons, and historical experiment directories.
 
 Every candidate and verification ledger contains exactly the same 3,034 problem IDs.
 `data/paper_core/manifest.json` records the expected counts and SHA-256 hashes.
-The anonymous-review snapshot stores the six large candidate ledgers losslessly as
-`.jsonl.gz`; the public loaders read either the plain or compressed form and verify the
-same uncompressed hashes.
+The anonymous-review snapshot stores the large candidate ledgers and scope file
+losslessly as `.jsonl.gz`; the public loaders read either the plain or compressed form
+and verify the same uncompressed hashes.
 
 ## Repository layout
 
