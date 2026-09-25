@@ -1,0 +1,19 @@
+{
+  "scope_manifest_sha256": "cbebc8ef6a4560a22a9fcda2f8ee360d475dc63c67d0548f393a2e2f4a4d944f",
+  "candidate_input": "SOURCE_ROOT/legacy_autodl/autosmt_scale/capsweep/repo/data/bank13_dual_v3/dual_32b.jsonl",
+  "candidate_sha256": "94e68d60485aa88050267c055c293a8b86c401111ca8696cc2ddb260b3a895a5",
+  "output_sha256": {
+    "written_not_program.smt2": "a2c8b665af8e62188576515bc8fcdab699ff1439f71808521832fb91d5a45e7e",
+    "01_input.json": "c54b0cbbbabc019ca73df67d1b24a56f0e2d761ce182bde8fb8e12ca501795d4",
+    "05_target_selection.json": "914a9be0536a08fba332e86eb4bde563122aa29511b1554b58cd8181f1b7abd5",
+    "08_reverification.json": "cd6c221743dad4f10563cc51dcec208ad0cd1a1e4ebb18d9d8df9ef8fb5af9c1",
+    "04_reviewed_reference.json": "9927e975400fd3c532493b8235a2b58d99d68e31e031dc3482842d4f51df03db",
+    "summary.json": "222c6d1f6d8b454bde49dbd9b0d00fd1fb11b5e1b1fe3f4fb866d7eabcfb2aad",
+    "program_not_written.smt2": "a5fdca9759eb97c85dac35e3e2201a15b23904f96cde4ac7e157a4d4ffbef822",
+    "06_llm_request_not_executed.json": "210defd51e5d7a6f68ef1933cd78d0fe4fb85b159cf238c72fa3d0c191f4bea7",
+    "02_native_capture.json": "8ef7f37a9a68d3f2c7c5fbdf8907ea8c1db4f7f9e7c361b8450403c16f9c0ce5",
+    "07_proposed_revision.json": "5882fd135aeb3bbcf454318af6e4e22e5c7127394c29c6fd43aa9be3b38831fd",
+    "03_pair_diagnosis_without_reference.json": "a87e8c5528e3dea116c75e2fc7be57c9d9a84d77cca887c0fe357fb744caa866"
+  },
+  "not_a_new_benchmark_experiment": true
+}

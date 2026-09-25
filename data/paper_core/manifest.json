@@ -1,0 +1,35 @@
+{
+  "schema": "orsmt-paper-core-data-v1",
+  "problem_count": 3034,
+  "models": ["15b", "3b", "7b", "14b", "32b", "72b"],
+  "assigned_outputs": 18204,
+  "expected_totals": {
+    "equivalent": 7867,
+    "refuted": 1905,
+    "remaining": 8432
+  },
+  "expected_by_model": {
+    "15b": {"equivalent": 760, "refuted": 974, "remaining": 1300},
+    "3b": {"equivalent": 426, "refuted": 414, "remaining": 2194},
+    "7b": {"equivalent": 1349, "refuted": 239, "remaining": 1446},
+    "14b": {"equivalent": 1346, "refuted": 103, "remaining": 1585},
+    "32b": {"equivalent": 1932, "refuted": 86, "remaining": 1016},
+    "72b": {"equivalent": 2054, "refuted": 89, "remaining": 891}
+  },
+  "sha256": {
+    "data/milp_benchmark_v3/eligible.jsonl": "03ee74835cf7d2f0b47408d8f5deb8868747249d43ff437ce2252728e9e8baec",
+    "data/milp_benchmark_v3/manifest.json": "78a95d814737e5b167f0e71e5b7b4387b6af26eae444f282f48dd28015aecc8b",
+    "data/paper_core/candidates/dual_15b.jsonl": "01a66ad49b499858e5dc7a93272a199312d537e6e9921ad8e1b0a3fe785ff7ea",
+    "data/paper_core/candidates/dual_3b.jsonl": "5bd3f300f087f78cbf306bfab3a4b17c27edb8749cccf6c4a790eb7980a01acc",
+    "data/paper_core/candidates/dual_7b.jsonl": "4bfd63d7683312eddadf9c3aa93abd42a1179668d7083d3e5965eb46cb02e37d",
+    "data/paper_core/candidates/dual_14b.jsonl": "5dbf2a7bd93507d8da3ee6745aa6ce380c1287d991fdef2823e029b1cbbb34a5",
+    "data/paper_core/candidates/dual_32b.jsonl": "449c8b9e423ffeba5b2bacd2bfa500a68a2ba5881998b49393ffad7df7f56891",
+    "data/paper_core/candidates/dual_72b.jsonl": "93a418d3804e8eee40617d71f0ec42d5f6b986fc8e08164091285bd86b4452e9",
+    "data/paper_core/verification/mc_15b.jsonl": "79d7fa9032d82d366b558315a4018878c33bba046777eaea12217d1d55660133",
+    "data/paper_core/verification/mc_3b.jsonl": "50c5efc7c76179cbb662a45127c4cc15b1e7bcb951246c1b8735e54585b46da1",
+    "data/paper_core/verification/mc_7b.jsonl": "4d2ac0d999a3b26db554791771049ab6a45b5a2ef349393f6509039f4ce744db",
+    "data/paper_core/verification/mc_14b.jsonl": "591d5ae83b281e6b723c72f7cecb7719cc6e4db55d028a64a79012e7e2f70b05",
+    "data/paper_core/verification/mc_32b.jsonl": "a7be19ac6cb1838061d1472dceac1e87ea42b7a0a5de3a8c9b57be283aae9267",
+    "data/paper_core/verification/mc_72b.jsonl": "79c01cccca6ae52ad5a4ec0fbdcfe02432bf3ccc837ecf4e01b1d221e675bd47"
+  }
+}

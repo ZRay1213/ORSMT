@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orsmt"
+version = "0.1.0"
+description = "Relational SMT verification for optimization-modeling pipelines"
+requires-python = ">=3.10"
+dependencies = ["z3-solver>=4.12"]
+
+[project.optional-dependencies]
+gurobi = ["gurobipy>=11"]
+native = ["pyomo>=6.8,<7", "pulp>=3,<4", "ortools>=9.10,<10"]
+
+[project.scripts]
+orsmt-audit = "orsmt.batch:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

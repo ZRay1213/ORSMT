@@ -1,0 +1,12 @@
+{
+  "schema": "orsmt-paper-core-v1",
+  "problem_count": 3034,
+  "models": ["15b", "3b", "7b", "14b", "32b", "72b"],
+  "assigned_outputs": 18204,
+  "candidate_directory": "data/paper_core/candidates",
+  "verification_directory": "data/paper_core/verification",
+  "scope_file": "data/milp_benchmark_v3/eligible.jsonl",
+  "reviser_model": "Qwen2.5-14B-Instruct",
+  "temperature": 0,
+  "max_llm_calls": 1
+}

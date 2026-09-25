@@ -1,0 +1,171 @@
+{
+  "target": "review",
+  "basis": "pair_disagreement_does_not_identify_the_faulty_side",
+  "implementation": {
+    "status": "REFUTED",
+    "records": [
+      {
+        "relation": "implementation",
+        "claim_id": "region:written\\program",
+        "verdict": "CERTIFIED",
+        "query": "exists observable x in written but not program",
+        "witness": {},
+        "implicated": [],
+        "source_span": null,
+        "violation_margin": null,
+        "normalized_violation": null,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact",
+          "detail": "every target row is entailed incrementally"
+        },
+        "reason": null,
+        "duration_ms": 5.596446339040995,
+        "metadata": {
+          "host": "written",
+          "excluded_from": "program",
+          "query_strategy": "incremental_rows",
+          "rows_checked": 1,
+          "common_rows_discharged": 6,
+          "target_rows": 7,
+          "region_direction": "left_minus_right",
+          "candidate_fault_if_refuted": "overconstraint"
+        }
+      },
+      {
+        "relation": "implementation",
+        "claim_id": "region:program\\written",
+        "verdict": "REFUTED",
+        "query": "exists observable x in program but not written",
+        "witness": {
+          "new_trips": "15",
+          "old_trips": "10"
+        },
+        "implicated": [
+          "old_trips_constraint"
+        ],
+        "source_span": null,
+        "violation_margin": "27/5",
+        "normalized_violation": 0.2125984251968504,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact+native",
+          "detail": "feasible in program; native captured MILP admits a completion of the witness; infeasible in written; native captured MILP is infeasible under the witness; violated row old_trips_constraint"
+        },
+        "reason": null,
+        "duration_ms": 8.118357975035906,
+        "metadata": {
+          "host": "program",
+          "excluded_from": "written",
+          "violated_target_row": "old_trips_constraint",
+          "query_strategy": "incremental_rows",
+          "region_direction": "right_minus_left",
+          "candidate_fault_if_refuted": "underconstraint"
+        }
+      },
+      {
+        "relation": "implementation",
+        "claim_id": "preference:written~program",
+        "verdict": "CERTIFIED",
+        "query": "exists x,y with different objective ordering in written and program",
+        "witness": {},
+        "implicated": [],
+        "source_span": null,
+        "violation_margin": null,
+        "normalized_violation": null,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact",
+          "detail": "objectives induce the same order by an exact positive score scale"
+        },
+        "reason": null,
+        "duration_ms": 0.03036484122276306,
+        "metadata": {
+          "candidate_fault_if_refuted": "preference",
+          "query_strategy": "positive_affine_score",
+          "score_scale": "1"
+        }
+      }
+    ]
+  },
+  "reporting": {
+    "status": "CERTIFIED",
+    "records": [
+      {
+        "relation": "reporting",
+        "claim_id": "result:feasible",
+        "verdict": "CERTIFIED",
+        "query": "reported point extends to a feasible point of program",
+        "witness": {
+          "new_trips": "2",
+          "old_trips": "13"
+        },
+        "implicated": [],
+        "source_span": null,
+        "violation_margin": null,
+        "normalized_violation": null,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact+native",
+          "detail": "reported values admit a complete feasible replay; native captured MILP admits a completion of the witness"
+        },
+        "reason": null,
+        "duration_ms": 1.4122659340500832,
+        "metadata": {}
+      },
+      {
+        "relation": "reporting",
+        "claim_id": "result:value_binding",
+        "verdict": "CERTIFIED",
+        "query": "reported value equals the objective at the reported point in program",
+        "witness": {
+          "new_trips": "2",
+          "old_trips": "13"
+        },
+        "implicated": [],
+        "source_span": null,
+        "violation_margin": null,
+        "normalized_violation": null,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact",
+          "detail": "all feasible completions bind to the reported value"
+        },
+        "reason": null,
+        "duration_ms": 1.2023849412798882,
+        "metadata": {}
+      },
+      {
+        "relation": "reporting",
+        "claim_id": "result:no_better",
+        "verdict": "CERTIFIED",
+        "query": "no feasible point of program improves on the reported value",
+        "witness": {},
+        "implicated": [],
+        "source_span": null,
+        "violation_margin": null,
+        "normalized_violation": null,
+        "replay": {
+          "passed": true,
+          "backend": "z3-exact",
+          "detail": "strictly-better region is empty"
+        },
+        "reason": null,
+        "duration_ms": 1.7161667346954346,
+        "metadata": {}
+      }
+    ]
+  },
+  "reference_to_written": {
+    "status": "UNDECIDED",
+    "records": []
+  },
+  "reference_to_program": {
+    "status": "UNDECIDED",
+    "records": []
+  },
+  "written_fingerprint": "b030ad15fee24c464314de7b430fca80906a121f7a7a9b286a653e2e85a8ad95",
+  "program_fingerprint": "b2577bf9f64c0a927ebecdc145fc4c0dcdb4b05958f5c7cd9c3fb2caaafb15b8",
+  "reference_fingerprint": null,
+  "reference_origin": null
+}

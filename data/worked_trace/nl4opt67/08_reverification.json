@@ -1,0 +1,341 @@
+{
+  "accepted": true,
+  "repair_target": "written_model",
+  "changed_artifacts": [
+    "written_model"
+  ],
+  "target_respected": true,
+  "model_code_consistent": true,
+  "result_verified": true,
+  "formal_reference_agreement": true,
+  "natural_language_verified": false,
+  "claim_scope": "agreement_with_provided_formal_reference",
+  "after": {
+    "target": "none",
+    "basis": "no_refuted_checked_relation",
+    "implementation": {
+      "status": "CERTIFIED",
+      "records": [
+        {
+          "relation": "implementation",
+          "claim_id": "region:written\\program",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in written but not program",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 2.3817140609025955,
+          "metadata": {
+            "host": "written",
+            "excluded_from": "program",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "left_minus_right",
+            "candidate_fault_if_refuted": "overconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "region:program\\written",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in program but not written",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 1.618511974811554,
+          "metadata": {
+            "host": "program",
+            "excluded_from": "written",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "right_minus_left",
+            "candidate_fault_if_refuted": "underconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "preference:written~program",
+          "verdict": "CERTIFIED",
+          "query": "exists x,y with different objective ordering in written and program",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "objectives induce the same order by an exact positive score scale"
+          },
+          "reason": null,
+          "duration_ms": 0.024345703423023224,
+          "metadata": {
+            "candidate_fault_if_refuted": "preference",
+            "query_strategy": "positive_affine_score",
+            "score_scale": "1"
+          }
+        }
+      ]
+    },
+    "reporting": {
+      "status": "CERTIFIED",
+      "records": [
+        {
+          "relation": "reporting",
+          "claim_id": "result:feasible",
+          "verdict": "CERTIFIED",
+          "query": "reported point extends to a feasible point of program",
+          "witness": {
+            "new_trips": "2",
+            "old_trips": "13"
+          },
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact+native",
+            "detail": "reported values admit a complete feasible replay; native captured MILP admits a completion of the witness"
+          },
+          "reason": null,
+          "duration_ms": 1.6317209228873253,
+          "metadata": {}
+        },
+        {
+          "relation": "reporting",
+          "claim_id": "result:value_binding",
+          "verdict": "CERTIFIED",
+          "query": "reported value equals the objective at the reported point in program",
+          "witness": {
+            "new_trips": "2",
+            "old_trips": "13"
+          },
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "all feasible completions bind to the reported value"
+          },
+          "reason": null,
+          "duration_ms": 1.1989292688667774,
+          "metadata": {}
+        },
+        {
+          "relation": "reporting",
+          "claim_id": "result:no_better",
+          "verdict": "CERTIFIED",
+          "query": "no feasible point of program improves on the reported value",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "strictly-better region is empty"
+          },
+          "reason": null,
+          "duration_ms": 1.7552552744746208,
+          "metadata": {}
+        }
+      ]
+    },
+    "reference_to_written": {
+      "status": "CERTIFIED",
+      "records": [
+        {
+          "relation": "implementation",
+          "claim_id": "region:reference\\written",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in reference but not written",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 1.5522930771112442,
+          "metadata": {
+            "host": "reference",
+            "excluded_from": "written",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "left_minus_right",
+            "candidate_fault_if_refuted": "overconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "region:written\\reference",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in written but not reference",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 1.5159896574914455,
+          "metadata": {
+            "host": "written",
+            "excluded_from": "reference",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "right_minus_left",
+            "candidate_fault_if_refuted": "underconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "preference:reference~written",
+          "verdict": "CERTIFIED",
+          "query": "exists x,y with different objective ordering in reference and written",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "objectives induce the same order by an exact positive score scale"
+          },
+          "reason": null,
+          "duration_ms": 0.01888815313577652,
+          "metadata": {
+            "candidate_fault_if_refuted": "preference",
+            "query_strategy": "positive_affine_score",
+            "score_scale": "1"
+          }
+        }
+      ]
+    },
+    "reference_to_program": {
+      "status": "CERTIFIED",
+      "records": [
+        {
+          "relation": "implementation",
+          "claim_id": "region:reference\\program",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in reference but not program",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 1.5125051140785217,
+          "metadata": {
+            "host": "reference",
+            "excluded_from": "program",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "left_minus_right",
+            "candidate_fault_if_refuted": "overconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "region:program\\reference",
+          "verdict": "CERTIFIED",
+          "query": "exists observable x in program but not reference",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "every target row is entailed incrementally"
+          },
+          "reason": null,
+          "duration_ms": 1.5028011985123158,
+          "metadata": {
+            "host": "program",
+            "excluded_from": "reference",
+            "query_strategy": "incremental_rows",
+            "rows_checked": 0,
+            "common_rows_discharged": 7,
+            "target_rows": 7,
+            "region_direction": "right_minus_left",
+            "candidate_fault_if_refuted": "underconstraint"
+          }
+        },
+        {
+          "relation": "implementation",
+          "claim_id": "preference:reference~program",
+          "verdict": "CERTIFIED",
+          "query": "exists x,y with different objective ordering in reference and program",
+          "witness": {},
+          "implicated": [],
+          "source_span": null,
+          "violation_margin": null,
+          "normalized_violation": null,
+          "replay": {
+            "passed": true,
+            "backend": "z3-exact",
+            "detail": "objectives induce the same order by an exact positive score scale"
+          },
+          "reason": null,
+          "duration_ms": 0.01822691410779953,
+          "metadata": {
+            "candidate_fault_if_refuted": "preference",
+            "query_strategy": "positive_affine_score",
+            "score_scale": "1"
+          }
+        }
+      ]
+    },
+    "written_fingerprint": "9fd5686cee93507745b1007e221bd2ab7921f4d624da2911ff73fdc8fffea42f",
+    "program_fingerprint": "b2577bf9f64c0a927ebecdc145fc4c0dcdb4b05958f5c7cd9c3fb2caaafb15b8",
+    "reference_fingerprint": "9fd5686cee93507745b1007e221bd2ab7921f4d624da2911ff73fdc8fffea42f",
+    "reference_origin": "manually_reviewed_from_original_NL4Opt_67_source_not_LLM_generated"
+  }
+}

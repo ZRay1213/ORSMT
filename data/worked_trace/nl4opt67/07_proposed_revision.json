@@ -1,0 +1,88 @@
+{
+  "id": "nl4opt_test:67",
+  "proposal_origin": "manually_reviewed_worked_example",
+  "formulation": {
+    "variables": [
+      {
+        "name": "new_trips",
+        "type": "int",
+        "lb": 0,
+        "ub": 15
+      },
+      {
+        "name": "old_trips",
+        "type": "int",
+        "lb": 0,
+        "ub": null
+      }
+    ],
+    "constraints": [
+      {
+        "name": "gifts_constraint",
+        "lhs": [
+          {
+            "coef": 50,
+            "var": "new_trips"
+          },
+          {
+            "coef": 70,
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 1000
+      },
+      {
+        "name": "old_trips_constraint",
+        "lhs": [
+          {
+            "var": "old_trips",
+            "coef": "3"
+          },
+          {
+            "var": "new_trips",
+            "coef": "-2"
+          }
+        ],
+        "op": ">=",
+        "rhs": "0"
+      },
+      {
+        "name": "non_negative_new_trips",
+        "lhs": [
+          {
+            "coef": 1,
+            "var": "new_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 0
+      },
+      {
+        "name": "non_negative_old_trips",
+        "lhs": [
+          {
+            "coef": 1,
+            "var": "old_trips"
+          }
+        ],
+        "op": ">=",
+        "rhs": 0
+      }
+    ],
+    "objective": {
+      "sense": "min",
+      "lhs": [
+        {
+          "coef": 30,
+          "var": "new_trips"
+        },
+        {
+          "coef": 40,
+          "var": "old_trips"
+        }
+      ]
+    }
+  },
+  "code": "import json\nimport gurobipy as gp\n\nm = gp.Model()\n\nnew_trips = m.addVar(name=\"new_trips\", vtype=gp.GRB.INTEGER, lb=0, ub=15)\nold_trips = m.addVar(name=\"old_trips\", vtype=gp.GRB.INTEGER, lb=0)\n\nm.addConstr(50 * new_trips + 70 * old_trips >= 1000, name=\"gifts_constraint\")\nm.addConstr(old_trips >= 0.4 * (new_trips + old_trips), name=\"old_trips_constraint\")\nm.addConstr(new_trips >= 0, name=\"non_negative_new_trips\")\nm.addConstr(old_trips >= 0, name=\"non_negative_old_trips\")\n\nm.setObjective(30 * new_trips + 40 * old_trips, gp.GRB.MINIMIZE)\n\nm.optimize()\n\nprint(json.dumps({\"objective_value\": float(m.ObjVal), \"assignment\": {v.VarName: v.X for v in m.getVars()}}))"
+}

@@ -1,0 +1,312 @@
+{
+  "schema": "optmath-source-structure-review-v1",
+  "commit": "f15bbc4477c70db85ad148df8bcc1b780bca0f8c",
+  "review_basis": "Agent review of official question structures and official family formulations; not a released per-instance type label, not an SMT proof of natural language, and not candidate-output filtering.",
+  "families": {
+    "job_shop": {
+      "official_ids": [
+        0,
+        3,
+        7,
+        10,
+        12,
+        14,
+        15,
+        19,
+        20,
+        21,
+        22,
+        28,
+        30,
+        31,
+        35,
+        38,
+        42,
+        50,
+        53,
+        56,
+        57,
+        59,
+        61,
+        62,
+        76,
+        80,
+        86,
+        96,
+        97,
+        99,
+        103,
+        104,
+        114,
+        115,
+        116,
+        120,
+        126
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/JopShop/metadata.json",
+      "rationale": "Fixed-duration precedence and disjunctive machine capacity, binary ordering with a fixed big-M constant; linear makespan."
+    },
+    "aircraft_landing": {
+      "official_ids": [
+        1,
+        5,
+        6,
+        11,
+        13,
+        16,
+        17,
+        18,
+        40,
+        51,
+        85,
+        109
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/AircraftLanding/metadata.json",
+      "rationale": "Landing windows, constant separation times and binary ordering; linear early/late deviation penalties."
+    },
+    "traveling_salesman": {
+      "official_ids": [
+        2,
+        8,
+        29,
+        33,
+        63,
+        65,
+        93,
+        124,
+        129
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/TSP/metadata.json",
+      "rationale": "Binary arcs, linear visit equalities and linear position-based subtour elimination; fixed arc costs."
+    },
+    "fixed_charge_network": {
+      "official_ids": [
+        4,
+        23,
+        32
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/MCND/metadata.json",
+      "rationale": "Linear flow balance and fixed-capacity activation; linear fixed opening plus per-unit flow costs."
+    },
+    "transit_line_planning": {
+      "official_ids": [
+        9,
+        68,
+        77
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/StaticLinePlanning/metadata.json",
+      "rationale": "Line selection and bounded frequencies, fixed per-line capacity coefficients, linear unmet-demand penalty and vehicle limit."
+    },
+    "coverage": {
+      "official_ids": [
+        24,
+        34,
+        54,
+        66,
+        83,
+        87,
+        94,
+        102,
+        130
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/cell_tower/metadata.json",
+      "rationale": "Binary tower and coverage choices; fixed coverage incidence, linear budget and population objective."
+    },
+    "network_flow": {
+      "official_ids": [
+        25,
+        26,
+        36,
+        39,
+        43,
+        48,
+        55,
+        84,
+        91,
+        105,
+        106,
+        111,
+        119,
+        127
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/netthru/metadata.json",
+      "rationale": "Linear flow balance, fixed link and optional node capacities; fixed per-unit transportation costs."
+    },
+    "team_assignment": {
+      "official_ids": [
+        27,
+        88
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/team_formulation/metadata.json",
+      "rationale": "Binary person-project assignment and fixed skill coefficients; linear shortage bounds. Model type review does not validate correctness of all stated skill bounds."
+    },
+    "capacitated_lot_sizing": {
+      "official_ids": [
+        37,
+        117
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/CLSP_expand_capacity/metadata.json",
+      "rationale": "Linear inventory conservation, resource capacities and binary setup activation; additive setup/production/holding costs."
+    },
+    "max_sum_dispersion": {
+      "official_ids": [
+        41,
+        45,
+        69,
+        73,
+        89,
+        98,
+        100,
+        125,
+        131
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/The_maxisum_model/metadata.json",
+      "rationale": "Pairwise binary selection admits exact AND linearization z<=x_i, z<=x_j, z>=x_i+x_j-1; objective sums fixed pairwise scores."
+    },
+    "hours_assignment": {
+      "official_ids": [
+        44
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/netasgn/metadata.json",
+      "rationale": "Continuous assigned hours with fixed supply, demand and contribution limits; linear hourly costs."
+    },
+    "flow_shop": {
+      "official_ids": [
+        46,
+        58,
+        72,
+        81,
+        108,
+        128
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/Flowshop_2/metadata.json",
+      "rationale": "Binary job-position assignment; linear time precedence with fixed processing times; linear final completion objective."
+    },
+    "unit_commitment": {
+      "official_ids": [
+        47,
+        74,
+        78,
+        79,
+        107,
+        112,
+        123
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/electrical_power/metadata.json",
+      "rationale": "Integer active/startup counts and continuous output; fixed per-unit limits and linear demand, reserve and transition conditions."
+    },
+    "shortest_path": {
+      "official_ids": [
+        49
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/The_shortest_path_problem/metadata.json",
+      "rationale": "Binary arcs with linear flow conservation and fixed arc costs."
+    },
+    "small_bucket_lot_sizing": {
+      "official_ids": [
+        52,
+        64,
+        67,
+        75,
+        95,
+        113,
+        122
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/SingleLevelSmallBucket/metadata.json",
+      "rationale": "Linear inventory/backlog balances, binary production/startup decisions and fixed machine-capacity/setup-time coefficients."
+    },
+    "max_min_dispersion": {
+      "official_ids": [
+        60,
+        82,
+        90
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/The_p_dispersion_model/metadata.json",
+      "rationale": "Binary pair activation admits exact AND linearization; minimum distance represented by a continuous bound and fixed-distance big-M rows."
+    },
+    "inventory_backlogging": {
+      "official_ids": [
+        70,
+        118
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/UncapacitatedLotSizingBacklogging/metadata.json",
+      "rationale": "Linear inventory/backlog balance and fixed-demand-derived setup bound; additive order, holding and backlog costs."
+    },
+    "shift_assignment": {
+      "official_ids": [
+        71,
+        92,
+        110,
+        121
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/SchedulingProblem/metadata.json",
+      "rationale": "Binary shift assignments with fixed availability and skills, linear demand/slack equations and additive penalties."
+    },
+    "factory_planning": {
+      "official_ids": [
+        101
+      ],
+      "scope_type": "LP_IP_MILP",
+      "structural_reference": "generators/Factory_Planning_Problem/metadata.json",
+      "rationale": "Linear manufacture/store/sell balances, fixed resource coefficients and sales/storage capacities; linear profit."
+    }
+  },
+  "nonlinear": {
+    "official_ids": [
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165
+    ],
+    "scope_type": "quadratic_or_conic",
+    "rationale": "Official question explicitly contains quadratic/conic feasibility restrictions (squared variables), not merely linear objectives."
+  }
+}
