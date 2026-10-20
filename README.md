@@ -4,53 +4,75 @@
 
 ### Semantic Verification and Repair in LLM-Based Optimization
 
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
-[![Problems: 3,034](https://img.shields.io/badge/Problems-3%2C034-146B67)](data/README.md)
-[![Assigned outputs: 18,204](https://img.shields.io/badge/Assigned_outputs-18%2C204-146B67)](data/paper_core/manifest.json)
+**Verify semantic agreement. Locate discrepancies. Repair and recheck.**
 
-[Quick start](#-quick-start) · [How it works](#-how-it-works) · [Released results](#-released-results) · [Reproduction](#-reproduce-the-core-audit) · [Citation](#-citation)
+[Results](#-experimental-results) · [Visual examples](#-visual-examples) · [Method](#-how-it-works) · [Quick start](#-quick-start) · [Citation](#-citation)
 
 </div>
 
-A written optimization model and its solver program can agree with each other and still omit the same requirement. They can also return the same objective value while describing different feasible decisions. **ORSMT** checks the semantic relations among source obligations, written mathematics, the model instantiated by solver code, and the returned report. It produces certificates or concrete counterexamples, routes repair, and checks repaired artifacts before adoption.
+A solver can return the expected optimum while its program implements a different feasible region. Written mathematics and code can also agree while omitting the same source requirement. **ORSMT** uses exact SMT queries to expose these discrepancies, produce concrete counterexamples, and verify repaired artifacts before adoption.
 
 **Paper:** *ORSMT: Unleashing the Potential of Satisfiability Modulo Theories for Semantic Verification and Repair in LLM-Based Optimization*<br>
 **Authors:** Rui Zhang¹, Chenyu Zhou², Jianghao Lin², Yaoxin Wu³, Dongdong Ge², Wen Song¹<br>
 ¹ Shandong University · ² Shanghai Jiao Tong University · ³ Eindhoven University of Technology
 
-## 🔎 A short example
+## 📊 Experimental results
 
-> **Request:** Make eight items, with brownies accounting for at least 40% of the total.
->
-> **Written model and solver model:** Both encode `5 × brownies − 2 × other ≥ 0`.
->
-> **Returned solution:** Three brownies and five other items.
+### Stronger agreement and more correct, matched outputs
 
-The written and solver models agree, and the returned point satisfies both. But three brownies out of eight is only **37.5%**. The source requirement is `3 × brownies − 2 × other ≥ 0`, which this point violates.
+The full pipeline raises **model–code agreement from 43.2% to 88.2%** and the share of outputs that are **both correct and matched from 25.2% to 40.2%**. An answer is correct under the benchmark evaluator; a match requires the exact semantic relation between written mathematics and captured code.
 
-The runnable [brownie example](examples/brownie_trace.py) checks each relation separately:
+[![Full-population pipeline comparison. Model–code agreement: Original 43.2%, ReLoop 45.5%, Opt-Verifier 25.3%, ORSMT 88.2%. Correct and matched: 25.2%, 26.1%, 20.9%, 40.2%, respectively.](assets/results/main-results.png)](assets/results/main-results.svg)
 
-| Check | Outcome | Evidence |
-| --- | --- | --- |
-| Written model preserves the 40% source obligation | `REFUTED` | `brownies = 3, other = 5` violates the requirement |
-| Written model and runtime model agree | All implementation checks `CERTIFIED` | Both encode the same weaker constraint |
-| Returned point, value and optimality agree with the runtime model | All reporting checks `CERTIFIED` | The report is valid for that runtime model |
-| End-to-end assessment | `REFUTED` | Agreement between artifacts does not establish source fidelity |
+*Full-population pipeline outcomes across six generators, with protected selection. The two plotted rates use all assigned outputs; unresolved cases remain in the denominator. [Source table and protocol](docs/paper-results/README.md#full-population-pipeline-comparison).*
+
+### Better repair under a shared revision budget
+
+With the same refuted inputs, the same Qwen2.5-14B reviser and one revision round, **certified voting reaches 50.9% correct-and-matched outputs**, compared with **44.8% for ReLoop** and **49.4% for Opt-Verifier**.
+
+[![Controlled repair comparison: ReLoop 44.8%, Opt-Verifier 49.4%, ORSMT direct revision 46.4%, plan review 47.5%, row review 49.6%, certified voting 50.9%.](assets/results/controlled-repair.png)](assets/results/controlled-repair.svg)
+
+*Controlled comparison on the fixed cohort of 1,905 original model–code refutations. These rates use a different denominator from the full-population panel above. [Source table and protocol](docs/paper-results/README.md#controlled-repair-comparison).*
+
+### Improvements when integrated into existing systems
+
+ORSMT improves artifact agreement in both hosts. **OptiMUS-0.3** increases correct-and-matched outputs from **20.8% to 39.5%**. **OptiMind** increases artifact agreement from **74.3% to 96.8%**, while correct-and-matched outputs rise from **55.3% to 62.7%**.
+
+[![Host integration results. OptiMUS-0.3: artifact match 36.7% to 63.9%, correct and matched 20.8% to 39.5%. OptiMind: artifact match 74.3% to 96.8%, correct and matched 55.3% to 62.7%.](assets/results/host-integration.png)](assets/results/host-integration.svg)
+
+*Each host is evaluated on the same assigned problems. OptiMUS uses the exact model–code relation; OptiMind uses exact scalar extraction or reference-blind multi-auditor checks and rechecks reconstructions. [Source table and protocol](docs/paper-results/README.md#host-integration).*
+
+The figures report experiments from the manuscript. The public repository contains the core implementation and frozen pre-repair audit data; the baseline and host runs are documented results, with their table snapshots provided for inspection. [Release coverage and reproduction](docs/reproduction.md).
+
+## 🔎 Visual examples
+
+### 1. A wrong proportion constraint changes the feasible region
+
+In the released **NL4Opt-67** trace, at least 40% of all delivery trips must use the old company. With `x` new-company trips and `y` old-company trips, the written formulation uses `y − x ≥ 0.4`; the program correctly uses `3y − 2x ≥ 0`.
+
+[![Three feasible-region plots for NL4Opt-67: the original written model excludes witness (15,10), while the captured program and repaired written model admit it. The recorded optimum (2,13), value 580, is feasible in all three.](assets/results/shipping-counterexample.png)](assets/results/shipping-counterexample.svg)
+
+The witness **`(x, y) = (15, 10)`** satisfies the program and the reviewed formal reference, but violates the written proportion row. After source review, the **written model is repaired**, the code stays unchanged, and the pair changes from **`REFUTED` to `CERTIFIED`**. The reported optimum remains **580**, illustrating why objective agreement alone misses the discrepancy.
+
+*The plot shows integer feasible points within the displayed window, with shaded continuous relaxations. The revision in this stored worked trace is manually reviewed, with zero LLM calls; it is not counted as an automated repair trial. [Original trace and counterexample](data/worked_trace/nl4opt67/summary.json) · [Revision](data/worked_trace/nl4opt67/07_proposed_revision.json) · [Reverification](data/worked_trace/nl4opt67/08_reverification.json).*
+
+### 2. The same optimum can hide an incorrect variable domain
+
+In the manuscript's **ComplexOR-3** example, the written model maximizes `x + y` subject to `x + y ≤ 2`, with nonnegative integer variables. The code changes `x` to binary. Both admit the reported optimum **`(0, 2)`**, with value **2**, but only the written model admits **`(2, 0)`**.
+
+[![A variable-domain discrepancy: the written integer model admits (2,0), the binary implementation excludes it, and restoring the integer domain restores model agreement. Both original models share optimum (0,2), value 2.](assets/results/domain-counterexample.png)](assets/results/domain-counterexample.svg)
+
+Restoring the integer domain repairs model–code equivalence. Fidelity to the original participant–car assignment request requires a separate source check. [Manuscript case record](docs/paper-results/source_tables/worked_cases.tex).
 
 ## 🧠 How it works
 
-[![ORSMT workflow: independently obtained source obligations, written mathematics, solver code and reports enter a common exact representation. SMT checks certify relations or return counterexamples. Reconstruction or source-guided revision is followed by verification before adoption.](assets/orsmt-overview.png)](assets/orsmt-overview.png)
+[![Independent source obligations, written mathematics, solver code and reports enter a common exact representation. SMT checks produce certificates or counterexamples. Reconstruction or source-guided revision is followed by verification before adoption.](assets/orsmt-overview.png)](assets/orsmt-overview.png)
 
-1. **Translate independent artifacts.** Structured model declarations, supported native models, and LP/MPS inputs enter a typed representation of decisions, domains, constraints and objectives. Mathematical prose can use an explicit LLM translation callback. Host execution captures the model actually instantiated by solver code.
-2. **Check semantic relations.** SMT queries compare feasible regions, objective preferences and values, and returned reports. Source obligations are checked when a formal source representation is available.
-3. **Diagnose and repair.** Counterexamples identify implicated constraints or domains. A selected artifact supports reconstruction, or a source-guided proposal revises the formulation.
-4. **Recheck before adoption.** Reconstructed or revised artifacts pass the required relation checks. Unsupported translation, ambiguous correspondence, timeouts and solver unknowns remain explicitly unresolved.
+**Translate → check → diagnose → repair → recheck.** ORSMT compares feasible regions, objective preferences and values, and reported solutions. Counterexamples localize the discrepancy to constraints or domains. A selected artifact supports direct reconstruction, or source-guided revision proposes a correction; required relation checks run again before adoption.
 
-An LLM can propose a translation or repair. **Verification verdicts come from the formal checks.**
+An LLM may propose a translation or repair. Verification verdicts come from the formal checks. Unsupported translations, ambiguous correspondences and solver unknowns remain unresolved. [Interfaces and scope](docs/reproduction.md#-interfaces-and-documentation).
 
 ## 🚀 Quick start
-
-### Install
 
 Use **Python 3.10+**. The commands below use Bash on Linux, macOS, or Git Bash on Windows.
 
@@ -59,111 +81,13 @@ git clone https://github.com/ZRay1213/ORSMT.git
 cd ORSMT
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
 python -m pip install -e .
-```
-
-The core requires Z3. The example below needs **no API key, GPU or Gurobi license**.
-
-### Run one case
-
-```bash
 python examples/brownie_trace.py > brownie_report.json
 ```
 
-Open `brownie_report.json`. Its `records` contain individual verdicts, witnesses, implicated constraints and replay evidence. The top-level `profile.end_to_end` is `REFUTED`; the record with `claim_id` equal to `share_at_least_40_percent` contains the distinguishing point shown above.
+This small example uses Z3 and needs no API key, GPU or Gurobi license. Open `brownie_report.json` to inspect verdicts, implicated constraints and witnesses. Its `profile.end_to_end` is `REFUTED`: the written model and runtime model agree, but both violate a source obligation.
 
-### Verify the released data
-
-```bash
-python scripts/verify_release.py
-```
-
-Expected summary: `status: PASS`, **3,034 problems**, **six models**, and **18,204 assigned outputs**. This check validates file hashes, problem IDs and aggregate counts without rerunning model generation or calling an LLM.
-
-## 📊 Released results
-
-The frozen core audit covers **3,034 MILP problems from 12 benchmark sources**, evaluated with six Qwen2.5-Instruct checkpoints. Every model has the same 3,034 assigned problems; every assigned output stays in the denominator.
-
-| Qwen2.5-Instruct checkpoint | Certified equivalent | Refuted | Remaining | Assigned outputs |
-| --- | ---: | ---: | ---: | ---: |
-| 1.5B | 760 | 974 | 1,300 | 3,034 |
-| 3B | 426 | 414 | 2,194 | 3,034 |
-| 7B | 1,349 | 239 | 1,446 | 3,034 |
-| 14B | 1,346 | 103 | 1,585 | 3,034 |
-| 32B | 1,932 | 86 | 1,016 | 3,034 |
-| 72B | 2,054 | 89 | 891 | 3,034 |
-| **Total** | **7,867** | **1,905** | **8,432** | **18,204** |
-
-These are the **frozen model–code audit outcomes before repair**. “Remaining” includes unresolved or unsupported pairs. The [release manifest](data/paper_core/manifest.json) records the expected counts and SHA-256 hashes; the [data guide](data/README.md) explains provenance and the ledger layout.
-
-The repository contains the core implementation and this six-model data release. External repair baselines, host-system comparisons, the 0.5B checkpoint and historical experiment directories are outside this release.
-
-## 🧪 Reproduce the core audit
-
-### Run the tests
-
-```bash
-PYTHONPATH=src python -m unittest discover -s tests -v
-```
-
-### Create a repair plan
-
-The following command freezes a deterministic six-model repair plan. It does not execute generated programs, load a GPU model, or call an LLM.
-
-```bash
-python ops/run_routed_milp_repair.py \
-  --out /tmp/orsmt-plan \
-  --mode routed \
-  --plan \
-  --reviser-model Qwen2.5-14B-Instruct
-```
-
-The output reports **3,034 problems**, **six models**, **18,204 assigned outputs** and `gpu_loaded: false`. The plan is saved as `/tmp/orsmt-plan/PLAN.json`. Use a fresh output directory when changing the configuration.
-
-### Optional native adapters and Gurobi replay
-
-```bash
-python -m pip install -e '.[native,gurobi]'
-python examples/brownie_trace.py --native-gurobi
-```
-
-Gurobi-backed execution requires a valid Gurobi installation and license. Actual routed repair also needs an explicitly configured model endpoint; inspect `python ops/run_routed_milp_repair.py --help` for runner options. [`requirements-repro.txt`](requirements-repro.txt) records experiment-host versions, while [`pyproject.toml`](pyproject.toml) provides compatible version ranges for installation.
-
-[`ops/runtime/capture_gurobi.py`](ops/runtime/capture_gurobi.py) runs generated programs in a child process and captures the model at `optimize()`. Process isolation is not a security sandbox: run untrusted generated code inside an external container or equivalent sandbox.
-
-## 🧩 Interfaces and documentation
-
-| Interface | Purpose |
-| --- | --- |
-| [`ORSMTWorkflow`](src/orsmt/workflow.py) | Artifact translation, SMT diagnostics and conditional repair |
-| [`Verifier`](src/orsmt/verify.py) | Feasible regions, objective relations and returned reports |
-| [`diagnose_repair`](src/orsmt/repair_workflow.py) | Separate discrepancy detection from the choice of repair target |
-| [`repair_case`](src/orsmt/repair_engine.py) | Deterministic or source-guided repair followed by verification |
-| [`emit_gurobi`](src/orsmt/milp_codegen.py) | Generate a complete fixed-instance Gurobi program from a selected model |
-
-Further guides, in Chinese: [pipeline and diagnostics](docs/pipeline_and_taxonomy_zh.md) · [repair workflow](docs/repair_workflow_zh.md) · [translation and source frontend](docs/translator_source_frontend_zh.md).
-
-The frozen scope covers linear programs and pure or mixed-integer linear programs with a single linear objective. Scope selection uses release metadata, reference model structure or reviewed source evidence. Candidate correctness, execution success, checkpoint size and verification outcomes do not select problem IDs.
-
-<details>
-<summary><strong>Repository layout</strong></summary>
-
-```text
-src/orsmt/                         Typed representation, translation, SMT checks, repair and metrics
-tests/                             Unit and integration tests
-ops/                               Core audit and repair entry points
-examples/                          Runnable examples
-docs/                              Pipeline, repair and frontend guides
-assets/                            README workflow illustration
-data/milp_benchmark_v3/            Frozen 3,034-problem scope and provenance
-data/paper_core/candidates/        Six candidate ledgers
-data/paper_core/verification/      Six frozen model–code verification ledgers
-scripts/verify_release.py          Offline integrity and denominator checks
-configs/paper_core.json            Six-model reproduction configuration
-```
-
-</details>
+For tests, native adapters, Gurobi replay, repair planning and the frozen data audit, see the [reproduction guide](docs/reproduction.md).
 
 ## 📖 Citation
 

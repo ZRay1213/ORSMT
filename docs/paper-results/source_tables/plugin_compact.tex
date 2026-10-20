@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\caption{Host integration over 3,034 problems. Cells report count (rate).}
+\label{tab:plugincomparison}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llrrr@{}}
+\toprule
+System & Pipeline & \shortstack{Correct\\answer} &
+\shortstack{Artifact\\match} & \shortstack{Correct and\\matched}\\
+\midrule
+OptiMUS-0.3 & Original & 647 (21.3) & 1,113 (36.7) & 630 (20.8)\\
+ & Original + ORSMT & \textbf{1,199 (39.5)} & \textbf{1,938 (63.9)} & \textbf{1,199 (39.5)}\\
+\midrule
+OptiMind & Original & 1,885 (62.1) & 2,254 (74.3) & 1,678 (55.3)\\
+ & Original + ORSMT & \textbf{1,904 (62.8)} & \textbf{2,937 (96.8)} & \textbf{1,901 (62.7)}\\
+\bottomrule
+\end{tabular*}
+\end{table}

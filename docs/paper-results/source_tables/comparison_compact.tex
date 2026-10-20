@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\caption{Full-population outcomes over 3,034 problems and six generators (18,204 outputs). Outcome cells report count (rate); correct-answer counts use the 18,192 outputs with references.}
+\label{tab:nativepipelines}
+\centering\footnotesize\setlength{\tabcolsep}{1.0pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Pipeline & \shortstack{Correct\\answer} & \shortstack{Model--code\\match} & \shortstack{Correct and\\matched} & \shortstack{Correct and matched\\/ correct answers} & \shortstack{Newly correct / original\\correct kept/total}\\
+\midrule
+Original & 4,931 (27.1) & 7,867 (43.2) & 4,588 (25.2) & 4,588/4,931 & 0 / 4,931/4,931\\
+ReLoop & 5,760 (31.7) & 8,285 (45.5) & 4,744 (26.1) & 4,744/5,760 & 829 / 4,931/4,931\\
+Opt-Verifier & 7,070 (38.9) & 4,612 (25.3) & 3,807 (20.9) & 3,807/7,070 & 2,139 / 4,420/4,931\\
+\textbf{ORSMT} & \textbf{7,309 (40.2)} & \textbf{16,053 (88.2)} & \textbf{7,308 (40.2)} & \textbf{7,308/7,309} & \textbf{2,378 / 4,931/4,931}\\
+\bottomrule
+\end{tabular*}
+\end{table}

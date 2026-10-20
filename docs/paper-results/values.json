@@ -1,0 +1,90 @@
+{
+  "full_population": [
+    {
+      "method": "Original",
+      "correct_answer": 27.1,
+      "model_code_match": 43.2,
+      "correct_and_matched": 25.2
+    },
+    {
+      "method": "ReLoop",
+      "correct_answer": 31.7,
+      "model_code_match": 45.5,
+      "correct_and_matched": 26.1
+    },
+    {
+      "method": "Opt-Verifier",
+      "correct_answer": 38.9,
+      "model_code_match": 25.3,
+      "correct_and_matched": 20.9
+    },
+    {
+      "method": "ORSMT",
+      "correct_answer": 40.2,
+      "model_code_match": 88.2,
+      "correct_and_matched": 40.2
+    }
+  ],
+  "controlled_repair": [
+    {
+      "method": "ReLoop",
+      "correct_and_matched": 44.8
+    },
+    {
+      "method": "Opt-Verifier",
+      "correct_and_matched": 49.4
+    },
+    {
+      "method": "ORSMT direct revision",
+      "correct_and_matched": 46.4
+    },
+    {
+      "method": "ORSMT with plan review",
+      "correct_and_matched": 47.5
+    },
+    {
+      "method": "ORSMT with row review",
+      "correct_and_matched": 49.6
+    },
+    {
+      "method": "ORSMT certified voting",
+      "correct_and_matched": 50.9
+    }
+  ],
+  "host_integration": [
+    {
+      "system": "OptiMUS-0.3",
+      "pipeline": "Original",
+      "correct_answer": 21.3,
+      "artifact_match": 36.7,
+      "correct_and_matched": 20.8
+    },
+    {
+      "system": "OptiMUS-0.3",
+      "pipeline": "Original + ORSMT",
+      "correct_answer": 39.5,
+      "artifact_match": 63.9,
+      "correct_and_matched": 39.5
+    },
+    {
+      "system": "OptiMind",
+      "pipeline": "Original",
+      "correct_answer": 62.1,
+      "artifact_match": 74.3,
+      "correct_and_matched": 55.3
+    },
+    {
+      "system": "OptiMind",
+      "pipeline": "Original + ORSMT",
+      "correct_answer": 62.8,
+      "artifact_match": 96.8,
+      "correct_and_matched": 62.7
+    }
+  ],
+  "sources": {
+    "full_population": "comparison_compact.tex",
+    "controlled_repair": "ablation_compact.tex",
+    "host_integration": "plugin_compact.tex"
+  },
+  "uncertainty": "Aggregate rates transcribed from paper tables; no uncertainty estimates or significance markers inferred."
+}
