@@ -23,7 +23,7 @@ INK, TEAL, BLUE, ORANGE, GREY = '#17313A', '#007F75', '#0072B2', '#D55E00', '#98
 plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 11,
     'axes.labelcolor': INK, 'text.color': INK, 'xtick.color': INK, 'ytick.color': INK,
     'axes.spines.top': False, 'axes.spines.right': False,
-    'svg.fonttype': 'none', 'pdf.fonttype': 42, 'savefig.facecolor': 'white'})
+    'svg.fonttype': 'none', 'svg.hashsalt': 'orsmt-readme', 'pdf.fonttype': 42, 'savefig.facecolor': 'white'})
 
 
 def clean(line):
@@ -33,7 +33,7 @@ def clean(line):
 def save(fig, name):
     fig.savefig(OUT / (name + '.png'), dpi=180, bbox_inches='tight')
     svg_path = OUT / (name + '.svg')
-    fig.savefig(svg_path, bbox_inches='tight')
+    fig.savefig(svg_path, bbox_inches='tight', metadata={'Date': None})
     svg_path.write_text('\n'.join(line.rstrip() for line in svg_path.read_text().splitlines()) + '\n')
     plt.close(fig)
 
@@ -85,7 +85,7 @@ ax.set_yticks(y, [r['method'] for r in controlled]);ax.invert_yaxis();ax.set_xli
 for yi, row in zip(y, controlled):
     ax.text(row['correct_and_matched']+0.7, yi, f"{row['correct_and_matched']:.1f}%", va='center', fontweight='bold')
 ax.set_xlabel('Correct and matched outputs (%)')
-ax.set_title('Same refuted cohort, same 14B reviser, one revision round', loc='left', fontweight='bold', pad=18)
+ax.set_title('Repair policies on the same refuted cohort', loc='left', fontweight='bold', pad=18)
 ax.set_axisbelow(True);ax.xaxis.grid(True, color='#E3EAED');ax.spines['left'].set_visible(False);ax.tick_params(length=0)
 fig.tight_layout();save(fig, 'controlled-repair')
 
@@ -112,46 +112,62 @@ for ax, name in zip(axs,['OptiMUS-0.3','OptiMind']):
 fig.legend(*axs[0].get_legend_handles_labels(), frameon=False, loc='lower center', ncol=2, bbox_to_anchor=(.5,0))
 fig.tight_layout(w_pad=3, rect=(0,.08,1,1));save(fig,'host-integration')
 
-trace=json.loads((ROOT/'data/worked_trace/nl4opt67/summary.json').read_text())
-assert trace['worked_witness']=={'new_trips':15,'old_trips':10}
-assert trace['before_pair']=='REFUTED' and trace['after_pair']=='CERTIFIED'
-fig,axs=plt.subplots(1,3,figsize=(13.3,4.3))
-x=np.linspace(0,15,500);capacity=(1000-50*x)/70
-for i,(ax,title) in enumerate(zip(axs,['A  Original written model','B  Captured solver model','C  Repaired written model'])):
-    bound=x+.4 if i==0 else 2*x/3
-    floor=np.maximum(capacity,bound)
-    ax.fill_between(x,floor,20,color=BLUE if i==0 else TEAL,alpha=.13)
-    ax.plot(x,capacity,color=GREY,lw=1.4,label='Delivery capacity')
-    ax.plot(x,bound,color=BLUE if i==0 else TEAL,lw=2)
-    points=[(u,v) for u in range(16) for v in range(21) if 50*u+70*v>=1000 and (v>=u+.4 if i==0 else 3*v>=2*u)]
-    px,py=zip(*points);ax.scatter(px,py,s=8,color=BLUE if i==0 else TEAL,alpha=.5)
-    ax.scatter([2],[13],s=150,marker='*',color=INK,zorder=4)
-    ax.annotate('Reported optimum\n(2, 13), value 580',(2,13),xytext=(1,6.2),fontsize=9,arrowprops={'arrowstyle':'-','color':INK})
-    ax.scatter([15],[10],s=110,marker='X',color=ORANGE,zorder=5,clip_on=False)
-    ax.annotate('Witness (15, 10)\n'+('excluded' if i==0 else 'admitted'),(15,10),xytext=(7.2,2.3),fontsize=9,color=ORANGE,arrowprops={'arrowstyle':'->','color':ORANGE})
-    ax.text(.04,.94,('y ≥ x + 0.4' if i==0 else '3y ≥ 2x'),transform=ax.transAxes,fontsize=12,fontweight='bold',va='top')
-    ax.set(xlim=(-.5,15.6),ylim=(0,20.4),xlabel='Trips by new company (x)',ylabel='Trips by old company (y)')
-    ax.set_title(title,loc='left',fontweight='bold',fontsize=11,pad=15)
-    ax.set_xticks([0,5,10,15]);ax.set_yticks([0,5,10,15,20]);ax.grid(alpha=.12);ax.set_axisbelow(True)
-fig.tight_layout(w_pad=2);save(fig,'shipping-counterexample')
+from fractions import Fraction
+trace_dir = ROOT / 'data/worked_trace/nl4opt67'
+trace = json.loads((trace_dir / 'summary.json').read_text())
+written = json.loads((trace_dir / '01_input.json').read_text())['formulation']
+runtime = json.loads((trace_dir / '02_native_capture.json').read_text())['ir']
+repaired = json.loads((trace_dir / '07_proposed_revision.json').read_text())['formulation']
 
-fig,axs=plt.subplots(1,3,figsize=(12.4,4))
-for i,(ax,title) in enumerate(zip(axs,['A  Written: x is integer','B  Code: x is binary','C  Repaired: x is integer'])):
-    polygon=[(0,0),(1,0),(1,1),(0,2)] if i==1 else [(0,0),(2,0),(0,2)]
-    ax.add_patch(plt.Polygon(polygon,color=TEAL,alpha=.12))
-    pts=[(x,y) for x in range(3) for y in range(3) if x+y<=2 and (x<=1 if i==1 else True)]
-    ax.scatter(*zip(*pts),s=65,color=TEAL)
-    ax.scatter([0],[2],s=170,marker='*',color=INK,zorder=4)
-    ax.scatter([2],[0],s=120,marker='X',color=ORANGE,zorder=5)
-    ax.annotate('(2, 0) '+('excluded' if i==1 else 'admitted'),(2,0),xytext=(.75,.65),fontsize=10,color=ORANGE,arrowprops={'arrowstyle':'->','color':ORANGE})
-    ax.text(.06,.87,'Maximize x + y\nx + y ≤ 2',transform=ax.transAxes,fontsize=11)
-    ax.set(xlim=(-.3,2.4),ylim=(-.3,2.6),xlabel='x',ylabel='y',aspect='equal')
-    ax.set_title(title,loc='left',fontweight='bold',fontsize=11,pad=14)
-    ax.set_xticks([0,1,2]);ax.set_yticks([0,1,2]);ax.grid(alpha=.15);ax.set_axisbelow(True)
-fig.tight_layout();save(fig,'domain-counterexample')
+def admits(model, point):
+    for var in model['variables']:
+        v = point[var['name']]
+        if var.get('lb') is not None and v < Fraction(str(var['lb'])): return False
+        if var.get('ub') is not None and v > Fraction(str(var['ub'])): return False
+        if var['type'] in ('int', 'integer', 'binary') and v.denominator != 1: return False
+    for row in model['constraints']:
+        lhs = sum(Fraction(str(t['coef'])) * point[t['var']] for t in row['lhs'])
+        rhs = Fraction(str(row['rhs']))
+        if not {'>=': lhs >= rhs, '<=': lhs <= rhs, '==': lhs == rhs}[row['op']]: return False
+    return True
+
+# The y limit is a display window, not a model constraint.
+points = {(x,y): {'new_trips':Fraction(x), 'old_trips':Fraction(y)}
+          for x in range(16) for y in range(21)}
+sets = [{xy for xy, point in points.items() if admits(model, point)}
+        for model in (written, runtime, repaired)]
+assert sets[0] <= sets[1] and sets[1] == sets[2]
+witness = (trace['worked_witness']['new_trips'], trace['worked_witness']['old_trips'])
+assert witness in sets[1] - sets[0]
+optimal = tuple(int(trace['native_returned_result']['assignment'][k]) for k in ['new_trips','old_trips'])
+assert all(optimal in allowed for allowed in sets)
+fig, axs = plt.subplots(1,2,figsize=(11.4,5.1))
+for i, ax in enumerate(axs):
+    if i==0:
+        groups=[(sets[0], GREY, 'o', True), (sets[1]-sets[0], ORANGE, 'o', False)]
+    else:
+        groups=[(sets[2], TEAL, 'o', True)]
+    for pts,color,marker,filled in groups:
+        px,py=zip(*sorted(pts))
+        ax.scatter(px,py,s=18,marker=marker,facecolors=color if filled else 'none',edgecolors=color,linewidths=.8)
+    ax.scatter(*witness,s=100,marker='X',color=ORANGE,zorder=5)
+    ax.scatter(*optimal,s=150,marker='*',color=INK,zorder=6)
+    ax.annotate('Separating point (15, 10)',witness,xytext=(5.2,1.7),fontsize=9,color=ORANGE,arrowprops={'arrowstyle':'->','color':ORANGE})
+    ax.annotate('Recorded optimum\n(2, 13), value 580',optimal,xytext=(.7,5.5),fontsize=9,arrowprops={'arrowstyle':'->','color':INK})
+    ax.set(xlim=(-.5,15.7),ylim=(0,20.5),xlabel='New-company trips (x)',ylabel='Old-company trips (y)',aspect='equal')
+    ax.set_xticks([0,5,10,15]);ax.set_yticks([0,5,10,15,20]);ax.grid(alpha=.12);ax.set_axisbelow(True)
+axs[0].set_title('A  Original disagreement\nWritten: y − x ≥ 0.4; code: 3y − 2x ≥ 0',loc='left',fontsize=11,fontweight='bold',pad=14)
+axs[1].set_title('B  After written-model revision\nBoth artifacts: 3y − 2x ≥ 0',loc='left',fontsize=11,fontweight='bold',pad=14)
+from matplotlib.lines import Line2D
+handles=[Line2D([],[],marker='o',linestyle='',color=GREY,label='Feasible in both original models'),
+         Line2D([],[],marker='o',linestyle='',markerfacecolor='none',color=ORANGE,label='Feasible only in original program'),
+         Line2D([],[],marker='o',linestyle='',color=TEAL,label='Feasible in both repaired models')]
+fig.legend(handles=handles,loc='lower center',ncol=1,frameon=False,fontsize=9,bbox_to_anchor=(.5,0))
+fig.tight_layout(rect=(0,.13,1,1),w_pad=2)
+save(fig,'shipping-counterexample')
 
 payload={'full_population':full,'controlled_repair':controlled,'host_integration':hosts,
   'sources':{'full_population':'comparison_compact.tex','controlled_repair':'ablation_compact.tex','host_integration':'plugin_compact.tex'},
   'uncertainty':'Aggregate rates transcribed from paper tables; no uncertainty estimates or significance markers inferred.'}
 (ROOT/'docs/paper-results/values.json').write_text(json.dumps(payload,indent=2)+'\n')
-print('Rendered five figures in PNG and SVG from paper tables and case records.')
+print('Rendered homepage comparison figures and the released shipping case.')

@@ -1,0 +1,55 @@
+{
+  "overleaf_revision": "0e57b3e5589fce7cb09c58392d608656dde931a8",
+  "checked_on": "2026-10-20",
+  "sources": [
+    {
+      "material_passport": "figures/orsmt_method_conference_v11.tex",
+      "destination": "assets/overleaf/source/figures/orsmt_method_conference_v11.tex",
+      "claim_anchor": "fig:completionflow",
+      "sha256": "cb16ed6ff69c5e941135b9bb8d8945a3a83748de6e003b2f8238d686bc4e8d7e",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "generated_consistency/repair_effects_3034.pdf",
+      "destination": "assets/overleaf/repair-progression.pdf",
+      "claim_anchor": "fig:repairoutcomes",
+      "sha256": "8a6956dd4c9c9bd70bd7f7e42b237c580aafea9446afb1fbd2ef3d913b1492e6",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "generated_consistency/case_domain.pdf",
+      "destination": "assets/overleaf/domain-case.pdf",
+      "claim_anchor": "fig:domaincase",
+      "sha256": "04b0e2955996a771fe71b226738d1c8db138b5ce44aa130f229a9b76f8a7d59e",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "figures/orsmt_icon_source_v7.pdf",
+      "destination": "assets/overleaf/source/figures/orsmt_icon_source_v7.pdf",
+      "claim_anchor": "fig:completionflow",
+      "sha256": "983f68775edf07e6a7f3f0cd34495d63311ba34aafb136a4ed08e923ed4aefdf",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "figures/orsmt_icon_model_v7.pdf",
+      "destination": "assets/overleaf/source/figures/orsmt_icon_model_v7.pdf",
+      "claim_anchor": "fig:completionflow",
+      "sha256": "35ef93f5bc558c59053883ebcb59a98f31b64044c0b453748a604d6837156326",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "figures/orsmt_icon_code_v7.pdf",
+      "destination": "assets/overleaf/source/figures/orsmt_icon_code_v7.pdf",
+      "claim_anchor": "fig:completionflow",
+      "sha256": "03dfb537ef2a493982e2ba43395e81f3fbe195255a2403338101786532b5b930",
+      "transfer": "byte-identical source copy"
+    },
+    {
+      "material_passport": "figures/orsmt_icon_report_v7.pdf",
+      "destination": "assets/overleaf/source/figures/orsmt_icon_report_v7.pdf",
+      "claim_anchor": "fig:completionflow",
+      "sha256": "f7f5555d95c56e6bf74a72e683f4f3c1e39a06c3503d8a70f67df0b38529e4eb",
+      "transfer": "byte-identical source copy"
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 # Homepage illustrations
 
-`orsmt-overview.png` is rendered from the ORSMT manuscript's
-`figures/orsmt_method_conference_v11.tex`, using its original four PDF icons.
+`overleaf/` preserves original manuscript artwork and the current referenced
+method source, with a [provenance and export record](overleaf/README.md).
+The original PDFs are linked from the README; displayed PNGs are direct renders.
 
-`results/` contains three experimental result figures and two feasible-region
-examples, each in PNG and editable SVG form. Recreate them with
+`results/` contains three comparison plots and the released NL4Opt-67 case in
+PNG and editable SVG form. Recreate them with
 `python scripts/render_readme_results.py` after installing matplotlib and numpy.
-The script reads checked-in manuscript table snapshots and the released NL4Opt-67
-trace. [Figure values, protocols and provenance](../docs/paper-results/README.md).
+The shipping plot reads stored model objects with exact rational arithmetic.
+[Values, experimental settings and provenance](../docs/paper-results/README.md).

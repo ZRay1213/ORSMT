@@ -1,0 +1,283 @@
+\section{Worked Inconsistency and Repair Cases}\label{app:workedexamples}
+
+The following four recorded benchmark cases connect the original artifacts, verification evidence,
+repair and subsequent checks. They connect individual mechanisms to exact variable domains,
+objective directions and constraint coefficients.
+
+\subsection{A ReLoop pass with inconsistent feasible regions}
+\label{app:industryexample}
+
+\input{generated_consistency/case.tex}
+
+IndustryOR problem 71 at 14B returns the reference value 623. The mathematical model and program
+each contain four variables and five constraints. ReLoop accepts the program's execution, and the
+reported solution passes feasibility, value binding and optimality checks under both models.
+The models nevertheless permit different decisions. Figure~\ref{fig:relooppass} shows the original
+judgment, the two witnesses and the two repair directions.
+
+\textbf{Complete compared models.} Let \(b,p,r,t\) denote boat, plane, train and truck quantities.
+All four are nonnegative integers. Both artifacts maximize
+\begin{equation}
+5t+10p+8b+7r
+\label{eq:industryobjective}
+\end{equation}
+and contain the four common constraints
+\begin{equation}
+\begin{aligned}
+12t+20p+15b+10r&\leq890,\\
+6t+3p+5b+4r&\leq500,\\
+t-r&\leq0,\\
+b-r&\leq0.
+\end{aligned}
+\label{eq:industrycommon}
+\end{equation}
+The remaining mathematical row is \(p-b\geq0\), while the program adds \(b-p\geq0\).
+Their objective coefficients, row counts and variable correspondence agree. The different
+inequality restricts the feasible region in both directions.
+
+\textbf{Witness checks.} The decision \((b,p,r,t)=(0,1,0,0)\) satisfies every mathematical
+constraint. Its wood and steel use are 20 and three, and its executable boat row has value negative
+one. Conversely, \((1,0,1,0)\) satisfies the program's complete model, uses 25 units of wood and nine
+of steel, and violates the written boat row by one. These decisions are witnesses to the two
+set differences, independently of the optimum shared by the models.
+
+\begin{table}[htbp]
+\caption{Exact witness evaluations for IndustryOR 71 at 14B.}
+\label{tab:industrywitnesses}
+\centering\small\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+Quantity or check & Mathematical witness & Executable witness\\
+\midrule
+Decision \((b,p,r,t)\) & \((0,1,0,0)\) & \((1,0,1,0)\)\\
+Wood use, limit 890 & 20 & 25\\
+Steel use, limit 500 & 3 & 9\\
+Mathematical row \(p-b\), lower bound 0 & 1 & \(-1\)\\
+Executable row \(b-p\), lower bound 0 & \(-1\) & 1\\
+Objective value & 10 & 15\\
+All mathematical constraints satisfied & Yes & No\\
+All executable constraints satisfied & No & Yes\\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\textbf{Repair from the mathematical model.} Keeping the mathematical model as the selected
+target replaces the executable inequality with \(p-b\geq0\). The compiler also reproduces the
+four common rows, integer declarations and objective. Capturing the new program yields the same
+complete model. Both difference queries are unsatisfiable, and the objective expressions are equal.
+This direction repairs the inconsistent implementation from the available mathematics.
+
+\textbf{Repair from the program.} Keeping the captured program as the selected target exports
+\(b-p\geq0\) into the mathematical artifact and retains every other captured field. The regenerated
+program and exported model again have unsatisfiable difference queries and equal objectives.
+This direction completes or corrects mathematics from an executable model. The source requirements
+determine which selected interpretation should be retained.
+
+\begin{evidencecase}{IndustryOR 71: the changed code and the certified result}
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictblue}{\textbf{Original program row.}}\par\smallskip
+\texttt{m.addConstr(boat - plane >= 0)}\par\medskip
+\textcolor{verdictgreen}{\textbf{Mathematical target repair.}}\par\smallskip
+\texttt{m.addConstr(plane - boat >= 0)}\par\medskip
+The variable declarations, objective and four other rows are retained. The program prints its
+computed objective and variable assignments after optimization.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictgreen}{\textbf{Certification after construction.}}\par\smallskip
+Both region difference queries are unsatisfiable. The objective coefficients and direction match.
+A decision with value 623 exists, and the query for a value greater than 623 is unsatisfiable.\par\medskip
+\textcolor{verdictblue}{\textbf{Effect of the repair.}}\par\smallskip
+The model--code relation changes from refuted to certified even though the answer remains correct.
+\end{minipage}
+\end{evidencecase}
+
+\textbf{Executed reconstruction.} A fresh replay executes the original program and both
+reconstructed Gurobi programs. It reads the instantiated variables, bounds, rows and objective from
+each program and compares them with the selected target using exact Z3 queries. Both repaired
+programs return \((b,p,r,t)=(0,0,89,0)\) with value 623. The returned point satisfies the complete
+model and binds to that value, and no better feasible decision exists. This replay checks the
+actual constructed programs in addition to the displayed row calculations.
+
+\subsection{Missing source requirements in two generated artifacts}
+\label{app:mamoexample}
+
+MAMO easy problem 20 at 1.5B illustrates two distinct repairs. The first restores agreement between
+the generated mathematical model and code. The second restores source requirements that both
+artifacts omitted and changes the optimal result.
+
+\textbf{Source and generated models.} The problem chooses integer quantities of four tour
+packages, with costs 100, 200, 300 and 400. It gives two capacity limits and two minimum quality
+requirements. The generated model uses nonnegative integers \(x_1,x_2,x_3,x_4\), minimizes
+\begin{equation}
+f(x)=100x_1+200x_2+300x_3+400x_4,
+\label{eq:mamocost}
+\end{equation}
+and contains only \(x_1+x_2\leq50\). The program also includes \(x_3+x_4\leq80\).
+Both artifacts omit the quality requirements. Their reported decision is zero in every coordinate,
+with objective zero. The recorded report has no explicit solver status.
+
+\begin{evidencecase}{MAMO easy 20: disagreement and missing requirements}
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictblue}{\textbf{Mathematical artifact.}}\par
+\(x_i\in\mathbb Z_{\geq0}\), minimize \(f(x)\),\par
+\(x_1+x_2\leq50\).\par\medskip
+\textcolor{verdictorange}{\textbf{Additional code row.}}\par
+\(x_3+x_4\leq80\).\par\medskip
+\textcolor{verdictorange}{\textbf{Exact counterexample.}}\par
+\((0,0,81,0)\) satisfies the written model and violates the additional capacity row by one.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictblue}{\textbf{Omitted source requirements.}}\par
+\(0.6x_1+0.8x_2\geq20\),\par
+\(0.7x_3+0.9x_4\geq30\).\par\medskip
+\textcolor{verdictorange}{\textbf{Old report.}}\par
+\((0,0,0,0)\) has zero cost and is optimal under both incomplete artifacts, while violating both
+source quality requirements.
+\end{minipage}
+\end{evidencecase}
+
+\textbf{Artifact repair.} Adding the second capacity row to the written model makes its region
+identical to the program's region. The objective and domains were equal before this change and
+remain equal. The zero decision remains optimal. This repair resolves the artifact discrepancy
+without changing the interpretation shared by both generated models.
+
+\textbf{Source repair.} The reviewed source formulation contains both capacities and both
+quality requirements. Clearing the decimal denominators gives the complete repaired model
+\begin{equation}
+\begin{aligned}
+\min\quad &100x_1+200x_2+300x_3+400x_4\\
+\text{subject to}\quad
+ &x_1+x_2\leq50, &x_3+x_4&\leq80,\\
+ &3x_1+4x_2\geq100, &7x_3+9x_4&\geq300,\\
+ &x_1,x_2,x_3,x_4\in\mathbb Z_{\geq0}.&&
+\end{aligned}
+\label{eq:mamosourcerepair}
+\end{equation}
+The integer coefficients represent the source decimals exactly. The old zero report fails both
+quality checks. The repaired decision \((34,0,43,0)\) has value 16,300 and matches the released
+answer. A fresh exact query for a feasible decision with lower cost is unsatisfiable.
+
+\begin{table}[htbp]
+\caption{Feasibility and value checks for the repaired MAMO easy 20 decision.}
+\label{tab:mamorepairchecks}
+\centering\small\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+Constraint or objective & Evaluated value & Required relation\\
+\midrule
+First capacity, \(x_1+x_2\) & 34 & At most 50\\
+Second capacity, \(x_3+x_4\) & 43 & At most 80\\
+First quality, \(3x_1+4x_2\) & 102 & At least 100\\
+Second quality, \(7x_3+9x_4\) & 301 & At least 300\\
+Objective, \(f(x)\) & 16,300 & Equals reported value\\
+Feasible decision with smaller objective & None & Query unsatisfiable\\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\textbf{Result of each intervention.} Model--code verification first restores the missing capacity
+row, changing the mathematical/executable row counts from one/two to two/two and the model--code
+relation from refuted to certified; the objective remains zero and the answer remains incorrect.
+Source review then restores both quality rows in both artifacts, giving four/four rows, objective
+16,300 and a correct answer. Code construction propagates the completed mathematical model into the
+implementation; the returned decision passes the feasibility and value checks above.
+
+\subsection{A domain mismatch and redundant constraints}
+\label{app:complexexample}
+
+ComplexOR problem 3 at 1.5B shows why row agreement alone is insufficient. The written model uses
+nonnegative integers \(x,y\), maximizes \(x+y\), and repeats the same row three times:
+\begin{equation}
+c_1:x+y\leq2,\qquad c_2:x+y\leq2,\qquad c_3:x+y\leq2.
+\label{eq:complexrows}
+\end{equation}
+The code uses the same objective and rows, but declares \(x\) binary. The decision \((2,0)\)
+satisfies all rows of both artifacts and violates only the executable domain. The original report
+\((0,2)\), with value two, is feasible, correctly valued and optimal under both models.
+
+\begin{evidencecase}{ComplexOR 3: domain repair and a smaller equivalent constraint set}
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictorange}{\textbf{Domain difference.}}\par
+Mathematics: \(x\in\mathbb Z_{\geq0}\).\par
+Code: \(x\in\{0,1\}\).\par\medskip
+\textcolor{verdictorange}{\textbf{Separating decision.}}\par
+At \((x,y)=(2,0)\), each row has left hand side two, while the binary domain rejects \(x=2\).\par\medskip
+\textcolor{verdictgreen}{\textbf{Domain repair.}}\par
+Declare the code variable as a nonnegative integer and check both inclusions again.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictblue}{\textbf{Redundancy evidence.}}\par
+For each duplicate, the other two rows entail it. Delete \(c_3\), then test and delete \(c_2\)
+against the remaining model.\par\medskip
+\textcolor{verdictgreen}{\textbf{Final model.}}\par
+One row \(c_1:x+y\leq2\) remains. The integer domains and objective are unchanged. The maximum
+value remains two.
+\end{minipage}
+\end{evidencecase}
+
+\textbf{Checked stages.} The original three-row mathematical model is the target, whereas the
+three-row executable model is refuted because it makes \(x\) binary. Restoring \(x\) as a
+nonnegative integer certifies the pair. Sequentially removing one and then two duplicate rows
+retains certification, leaving one essential row with the same domains and objective.
+
+\begin{figure}[htbp]
+\begin{minipage}[t]{0.52\textwidth}\vspace{0pt}
+\centering
+\includegraphics[width=\linewidth]{generated_consistency/case_domain.pdf}
+\caption{ComplexOR 3: the original binary domain excludes the circled integer decision; repair restores it.}
+\label{fig:domaincase}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\textwidth}\vspace{0pt}\small
+\textbf{Sequential deletion.} To remove \(c_3\), the checker proves that \(c_1,c_2\) and
+\(x+y>2\) cannot hold together. After deleting \(c_3\), the same query with \(c_1\) proves
+\(c_2\) redundant. The remaining row is essential because \((3,0)\) violates the original bound.
+Thus each deletion preserves an equivalent constraint set.
+
+\smallskip
+\textbf{Source interpretation.} The source concerns three participants, three cars and an interest
+matrix, whereas both artifacts use two variables. Domain and redundancy repair certifies the
+generated pair, but restoring the source requires indexed assignment variables and constraints.
+The released answer is three; the repaired generated model still has optimum two.
+\end{minipage}
+\end{figure}
+
+\subsection{An incorrect Opt-Verifier judgment on a certified solution}
+\label{app:bworexample}
+
+\begin{evidencecase}{BWOR 18: a correct result receives incorrect revision advice}
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictgreen}{\textbf{Returned assignment.}}\par
+The companies choose stores 3, 2, 1, 4 and 5. The costs are 7, 9, 6, 6 and 6, giving 34 in total.\par\medskip
+\textcolor{verdictgreen}{\textbf{Formal checks.}}\par
+The model pair is consistent. The decision is feasible, its value is bound correctly, and no
+better feasible decision exists in the compared models.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.475\linewidth}\vspace{0pt}\small
+\textcolor{verdictorange}{\textbf{Verifier comment.}}\par
+The proposed alternative uses stores 1, 2, 3, 4 and 5. Its listed costs are 4, 9, 12, 6 and 6.
+The comment labels this total as 34.\par\medskip
+\textcolor{verdictblue}{\textbf{Arithmetic check.}}\par
+The listed alternative costs total 37. The alternative supplies no improvement over the certified
+value 34.
+\end{minipage}
+\end{evidencecase}
+
+BWOR problem 18 at 14B assigns five construction companies to five stores. Its recorded model
+contains 25 variables and ten constraints. Both region inclusions, objective coefficients and
+preferences agree. The reported objective 34 matches the reference value, and the recorded exact
+checks certify both region inclusions, equal objective coefficients, equal decision preferences,
+feasibility under both models and objective binding. The query for a better feasible decision is
+unsatisfiable.
+
+The Opt-Verifier reproduction accepts the structural comparison but returns a negative solution
+judgment. Its proposed alternative has store indices \((1,2,3,4,5)\) and costs
+\((4,9,12,6,6)\), which sum to 37 rather than the claimed 34. The returned assignment
+\((3,2,1,4,5)\) instead costs (7+9+6+6+6=34). The error is in the feedback arithmetic, not
+model extraction or variable alignment.
+
+\textbf{Exact decision path and consequence.} The checker proves both region inclusions and equal
+objective coefficients, substitutes the returned assignment into every row, binds the reported
+value to the evaluated objective and proves that no feasible assignment has value below 34. The
+archived comparison judgment uses five language model calls and 44.2 seconds, yet its proposed
+counterexample is strictly worse. The exact certificate therefore retains the correct program and
+value instead of triggering an unnecessary revision.

@@ -26,13 +26,19 @@ The full pipeline raises **model–code agreement from 43.2% to 88.2%** and the 
 
 *Full-population pipeline outcomes across six generators, with protected selection. The two plotted rates use all assigned outputs; unresolved cases remain in the denominator. [Source table and protocol](docs/paper-results/README.md#full-population-pipeline-comparison).*
 
-### Better repair under a shared revision budget
+### Reconstruction and source revision in the original paper figure
 
-With the same refuted inputs, the same Qwen2.5-14B reviser and one revision round, **certified voting reaches 50.9% correct-and-matched outputs**, compared with **44.8% for ReLoop** and **49.4% for Opt-Verifier**.
+[![Original Overleaf figure before protected selection: model–code match rises from 43.2% to 86.4%; correct and matched rises from 25.2% to 32.4% after reconstruction and 36.7% after source revision.](assets/overleaf/repair-progression.png)](assets/overleaf/repair-progression.pdf)
 
-[![Controlled repair comparison: ReLoop 44.8%, Opt-Verifier 49.4%, ORSMT direct revision 46.4%, plan review 47.5%, row review 49.6%, certified voting 50.9%.](assets/results/controlled-repair.png)](assets/results/controlled-repair.svg)
+*Original vector artwork from Overleaf. This ablation is measured **before protected selection**: its 86.4% match rate and 36.7% correct-and-matched rate are distinct from the protected full-pipeline rates of 88.2% and 40.2% above. [Provenance and protocol](docs/paper-results/README.md#reconstruction-and-source-revision).*
 
-*Controlled comparison on the fixed cohort of 1,905 original model–code refutations. These rates use a different denominator from the full-population panel above. [Source table and protocol](docs/paper-results/README.md#controlled-repair-comparison).*
+### Repair policies and review ablations
+
+On the fixed original model–code refutations, **five-candidate certified voting reaches 50.9% correct-and-matched outputs**, compared with **44.8% for ReLoop** and **49.4% for Opt-Verifier**.
+
+[![Repair policy comparison: ReLoop 44.8%, Opt-Verifier 49.4%, ORSMT direct revision 46.4%, plan review 47.5%, row review 49.6%, five-candidate certified voting 50.9%.](assets/results/controlled-repair.png)](assets/results/controlled-repair.svg)
+
+*The same 1,905 original refutations and 14B reviser are used. Voting uses five candidates; review policies have their own call costs. This policy comparison is separate from the manuscript's single-round source-revision/reconstruction experiment. [Source table, costs and protocol](docs/paper-results/README.md#controlled-repair-comparison).*
 
 ### Improvements when integrated into existing systems
 
@@ -50,23 +56,25 @@ The figures report experiments from the manuscript. The public repository contai
 
 In the released **NL4Opt-67** trace, at least 40% of all delivery trips must use the old company. With `x` new-company trips and `y` old-company trips, the written formulation uses `y − x ≥ 0.4`; the program correctly uses `3y − 2x ≥ 0`.
 
-[![Three feasible-region plots for NL4Opt-67: the original written model excludes witness (15,10), while the captured program and repaired written model admit it. The recorded optimum (2,13), value 580, is feasible in all three.](assets/results/shipping-counterexample.png)](assets/results/shipping-counterexample.svg)
+[![NL4Opt-67: original feasible integer points shared by both artifacts are gray, points admitted only by the program are orange rings, and both repaired artifacts admit the same green points. Witness (15,10) distinguishes the original models; recorded optimum (2,13), value 580, remains feasible.](assets/results/shipping-counterexample.png)](assets/results/shipping-counterexample.svg)
 
 The witness **`(x, y) = (15, 10)`** satisfies the program and the reviewed formal reference, but violates the written proportion row. After source review, the **written model is repaired**, the code stays unchanged, and the pair changes from **`REFUTED` to `CERTIFIED`**. The reported optimum remains **580**, illustrating why objective agreement alone misses the discrepancy.
 
-*The plot shows integer feasible points within the displayed window, with shaded continuous relaxations. The revision in this stored worked trace is manually reviewed, with zero LLM calls; it is not counted as an automated repair trial. [Original trace and counterexample](data/worked_trace/nl4opt67/summary.json) · [Revision](data/worked_trace/nl4opt67/07_proposed_revision.json) · [Reverification](data/worked_trace/nl4opt67/08_reverification.json).*
+*The plot evaluates the stored original, captured and revised constraints using exact rational arithmetic and shows only feasible integer points in the displayed window. The vertical display limit is not a model bound. The revision in this stored worked trace is manually reviewed, with zero LLM calls; it is not counted as an automated repair trial. [Original trace and counterexample](data/worked_trace/nl4opt67/summary.json) · [Revision](data/worked_trace/nl4opt67/07_proposed_revision.json) · [Reverification](data/worked_trace/nl4opt67/08_reverification.json).*
 
 ### 2. The same optimum can hide an incorrect variable domain
 
 In the manuscript's **ComplexOR-3** example, the written model maximizes `x + y` subject to `x + y ≤ 2`, with nonnegative integer variables. The code changes `x` to binary. Both admit the reported optimum **`(0, 2)`**, with value **2**, but only the written model admits **`(2, 0)`**.
 
-[![A variable-domain discrepancy: the written integer model admits (2,0), the binary implementation excludes it, and restoring the integer domain restores model agreement. Both original models share optimum (0,2), value 2.](assets/results/domain-counterexample.png)](assets/results/domain-counterexample.svg)
+[![Original Overleaf domain figure: the binary executable domain excludes the circled decision (2,0); restoring the integer domain admits it.](assets/overleaf/domain-case.png)](assets/overleaf/domain-case.pdf)
 
-Restoring the integer domain repairs model–code equivalence. Fidelity to the original participant–car assignment request requires a separate source check. [Manuscript case record](docs/paper-results/source_tables/worked_cases.tex).
+The original Overleaf figure shows domain repair. Sequential removal of two duplicate constraints also preserves equivalence of the generated pair. **The generated model still has optimum 2; the original assignment problem has reference answer 3.** Restoring source fidelity requires participant–car assignment variables and constraints. [Full manuscript case and interpretation](docs/paper-results/source_tables/appendix_cases_detailed.tex).
 
 ## 🧠 How it works
 
-[![Independent source obligations, written mathematics, solver code and reports enter a common exact representation. SMT checks produce certificates or counterexamples. Reconstruction or source-guided revision is followed by verification before adoption.](assets/orsmt-overview.png)](assets/orsmt-overview.png)
+[![Current Overleaf method figure, v11: source requirements, written mathematics, solver code and reports enter an exact typed representation; comparison and guided revision are followed by the required relation checks.](assets/overleaf/method.png)](assets/overleaf/method.pdf)
+
+*Exported from the figure source actually referenced by the Overleaf manuscript, with its original formulas and Times/Helvetica font configuration. Source checks require admitted source contracts; the recheck gate applies the checks required by the active policy. Objective-value agreement is checked separately from preference-order agreement. [Exact source and export record](assets/overleaf/README.md).*
 
 **Translate → check → diagnose → repair → recheck.** ORSMT compares feasible regions, objective preferences and values, and reported solutions. Counterexamples localize the discrepancy to constraints or domains. A selected artifact supports direct reconstruction, or source-guided revision proposes a correction; required relation checks run again before adoption.
 

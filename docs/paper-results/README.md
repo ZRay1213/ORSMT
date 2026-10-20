@@ -41,12 +41,36 @@ label `tab:newrepairquality`.
 | ORSMT with row review | 49.6 |
 | ORSMT certified voting | 50.9 |
 
-The cohort is fixed to the 1,905 originally refuted model–code outputs. Every
-feedback method uses the same Qwen2.5-14B reviser and one temperature-zero revision
-with a 32,768-token context. The population differs from the full-pipeline table.
-The figures show aggregate rates, without inferred error bars or significance
-markers. The [manuscript's clustered comparison](source_tables/paired_comparison.tex) supports a positive difference
-against ReLoop; its interval against Opt-Verifier includes zero.
+The cohort is fixed to the 1,905 originally refuted model–code outputs. The
+policies use the same Qwen2.5-14B reviser, but they have different candidate and
+review call costs. Certified voting selects among five candidates. Each single
+candidate revision call uses temperature zero with a 32,768-token context. Program,
+model, requirement and judgment allowances are 3,072, 4,096, 8,192 and 800 tokens.
+
+The separate one-round source-revision/reconstruction comparison measures restored
+model–code matches, not the 50.9% correct-and-matched voting result. Its 84.4%
+restoration rate must not be described as the outcome of five-candidate voting or
+as evidence that all policies have equal call budgets.
+
+The figures show aggregate rates without inferred error bars or significance
+markers. The [clustered comparison](source_tables/paired_comparison.tex) supports a
+positive difference against ReLoop; the interval against Opt-Verifier includes zero.
+
+## Reconstruction and source revision
+
+[Original Overleaf PDF](../../assets/overleaf/repair-progression.pdf), referenced
+in `appendix_reorganized.tex` as `fig:repairoutcomes`.
+
+| Stage | Model–code match (%) | Correct and matched (%) |
+| --- | ---: | ---: |
+| Original | 43.2 | 25.2 |
+| After reconstruction | 86.4 | 32.4 |
+| After source revision | 86.4 | 36.7 |
+
+These values are measured **before protected selection**, over the full assigned
+population. They must not be substituted for the protected full-pipeline results
+of 88.2% and 40.2%. The PNG is rendered directly from the original PDF; its bar
+heights, count labels and layout are preserved.
 
 ## Host integration
 
@@ -80,20 +104,27 @@ infeasible in the written model. The recorded returned optimum `(2, 13)` has val
 model as the repair target. Its corrected row restores model agreement, with no
 code change. This stored revision is manually reviewed, with zero LLM calls.
 
-The figure shows feasible integer points only within `0 <= y <= 20`; the upper
-plot window is not a model constraint. Shading denotes the continuous relaxation.
+The figure reads all constraints, bounds and domains from the stored original,
+captured and revised model objects, evaluates them with exact rational arithmetic,
+and shows feasible integer points within `0 <= y <= 20`. This upper plot window is
+not a model constraint. No continuous feasible region is used as a visual proxy
+for integer decisions.
 The formal checks concern the supplied formal reference; the trace does not claim
 mechanical verification of unrestricted natural language.
 
 ### ComplexOR-3: integer versus binary domain
 
-Source: [manuscript worked cases](source_tables/worked_cases.tex), label
-`fig:workedcases`, right panel. This is a 1.5B output. With `max x + y`,
+Source: [full manuscript case](source_tables/appendix_cases_detailed.tex),
+`app:complexexample` and `fig:domaincase`. The figure uses the original Overleaf
+PDF `generated_consistency/case_domain.pdf`. This is a 1.5B output. With `max x + y`,
 `x + y <= 2`, and nonnegative integer variables, the written model admits `(2, 0)`.
 The program makes `x` binary and excludes this point. Both still admit the optimal
 point `(0, 2)`, with value 2. Restoring the integer domain repairs model agreement.
 The repeated constraint is shown once in the geometry; duplicate-row removal
-preserves this feasible region. Source-level assignment requirements are separate.
+preserves this feasible region. Source-level assignment requirements are separate: the original assignment
+problem has reference answer 3, while the domain-repaired generated model still
+has optimum 2. The full source repair requires indexed assignment variables and
+constraints, as stated in the manuscript.
 
 ## Recreate the illustrations
 
@@ -104,7 +135,15 @@ python -m pip install matplotlib numpy
 python scripts/render_readme_results.py
 ```
 
-This generates five PNG figures, editable SVG versions and `values.json`, without
-running model generation, repair baselines or host experiments. The public frozen
-ledgers contain the pre-repair core audit. See the [release guide](../reproduction.md)
-for supported execution and the release inventory.
+This generates three comparison plots and the released shipping case, each as
+PNG and SVG, plus `values.json`. It does not regenerate the original Overleaf
+artwork. To compile the referenced method source and export the original PDFs:
+
+```bash
+python scripts/export_overleaf_figures.py
+```
+
+That command requires pdfLaTeX and Poppler. The raw source, original PDFs,
+Overleaf revision and source hashes are recorded in
+[the export record](../../assets/overleaf/README.md). These rendering commands do
+not run model generation, repair baselines or host experiments.

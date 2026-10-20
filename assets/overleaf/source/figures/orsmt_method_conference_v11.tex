@@ -1,0 +1,113 @@
+\begingroup
+\definecolor{figink}{HTML}{17313A}%
+\definecolor{figmuted}{HTML}{52656D}%
+\definecolor{figteal}{HTML}{146B67}%
+\definecolor{figcopper}{HTML}{B55D36}%
+\definecolor{figblue}{HTML}{356F8C}%
+\definecolor{figrule}{HTML}{A9BCC0}%
+\definecolor{figsoft}{HTML}{F5F8F8}%
+\definecolor{figtealsoft}{HTML}{EAF5F3}%
+\definecolor{figcoppersoft}{HTML}{FFF1EB}%
+\begin{tikzpicture}[x=1mm,y=1mm,>=stealth,
+  stage/.style={font=\sffamily\bfseries\fontsize{9.4}{10.2}\selectfont,text=figteal,inner sep=0pt},
+  stagebadge/.style={circle,fill=figteal,text=white,font=\sffamily\bfseries\fontsize{7.8}{8.2}\selectfont,
+    minimum size=4.2mm,inner sep=0pt},
+  head/.style={font=\sffamily\bfseries\fontsize{8.8}{9.5}\selectfont,text=figink,inner sep=0pt},
+  body/.style={font=\sffamily\fontsize{8.5}{9.2}\selectfont,text=figink,inner sep=0pt},
+  note/.style={font=\sffamily\fontsize{7.8}{8.5}\selectfont,text=figmuted,inner sep=0pt},
+  math/.style={font=\fontsize{8.5}{9.2}\selectfont,text=figink,inner sep=0pt},
+  card/.style={draw=figrule,fill=figsoft,rounded corners=1.2pt,line width=.45pt}]
+\path[use as bounding box] (0,0) rectangle (165,78);
+\clip (0,0) rectangle (165,78);
+
+% 1. Independent artifacts.
+\node[stagebadge] at (2.8,75.5) {1};
+\node[anchor=west,stage] at (6.8,75.5) {INDEPENDENT ARTIFACTS};
+\foreach \x/\icon/\title/\subtitle in {
+  1/source/Task~\(s\)/source statement,
+  42/model/Written math/LLM formulation,
+  83/code/Solver code~\(\widehat P\)/runtime implementation,
+  124/report/Report~\(R\)/returned result}
+  {\path[card] (\x,64.0) rectangle (\x+39.5,72.7);
+   \node[anchor=south west,inner sep=0pt] at (\x+2.2,65.3)
+     {\includegraphics[height=5.3mm]{figures/orsmt_icon_\icon_v7.pdf}};
+   \node[anchor=west,head] at (\x+9.2,69.8) {\title};
+   \node[anchor=west,note] at (\x+9.2,66.2) {\subtitle};}
+\foreach \xa/\xb in {40.7/41.7,81.7/82.7,122.7/123.7}
+  \draw[->,figink,line width=.65pt] (\xa,68.4)--(\xb,68.4);
+
+% 2. Common exact representation.
+\node[stagebadge] at (2.8,61.0) {2};
+\node[anchor=west,stage] at (6.8,61.0) {COMMON EXACT REPRESENTATION};
+\node[anchor=east,note] at (164,61.0) {shared decisions, domains, rows and objective};
+\path[card,fill=white] (1,49.5) rectangle (164,58.3);
+\foreach \x in {41.5,82.5,123.5}
+  \draw[figrule,line width=.4pt] (\x,49.5)--(\x,58.3);
+
+\node[anchor=north,math] at (21.2,56.9) {\(C=\mathcal F_{\rm src}(s)\)};
+\node[anchor=north,note] at (21.2,52.6) {guarded source contracts};
+
+\node[anchor=north,math] at (62.0,56.9) {\(A\)};
+\node[anchor=north,note] at (62.0,52.6) {mathematical model};
+
+\node[anchor=north,math] at (103.0,56.9) {\(B=\mathcal H(\widehat P)\)};
+\node[anchor=north,note] at (103.0,52.6) {capture at \texttt{optimize()}};
+
+\node[anchor=north,math] at (143.8,56.9) {\(R=(\hat x,\hat z,{\rm status})\)};
+\node[anchor=north,note] at (143.8,52.6) {parse solver output};
+
+% 3. Four exact relations with explicit three-valued outcomes.
+\draw[->,figteal,line width=.65pt] (82.5,49.5)--(82.5,46.4);
+\node[stagebadge] at (2.8,46.0) {3};
+\node[anchor=west,stage] at (6.8,46.0) {SMT CHECKS};
+\node[anchor=east,note] at (164,46.0) {typed correspondence \(\pi:X_A\rightharpoonup X_B\)};
+\foreach \xa/\xb/\label/\formula in {
+  1/40.5/Source/{\(A\models C,\ B\models C\)},
+  42/81.5/Region/{\(F_A^X=F_B^X\)},
+  83/122.5/Objective/{\(v_A=v_B,\ \succ_A=\succ_B\)},
+  124/164/Report/{feasible, correct value, optimal}}
+  {\path[card,fill=white] (\xa,33.0) rectangle (\xb,43.2);
+   \node[anchor=north west,head,text=figblue] at (\xa+2.0,41.5) {\label};
+   \node[anchor=south,math] at ({(\xa+\xb)/2},34.8) {\formula};}
+
+\path[draw=figrule,fill=figsoft,rounded corners=1.2pt,line width=.45pt] (1,27.5) rectangle (164,31.4);
+\node[anchor=west,note] at (3,29.45) {\textcolor{figteal}{\(\blacksquare\)}\ \textsc{unsat}: certificate};
+\node[anchor=center,note] at (82.5,29.45) {\textcolor{figcopper}{\(\blacktriangle\)}\ \textsc{sat}: witness};
+\node[anchor=east,note] at (162,29.45) {\textcolor{figmuted}{\(\blacklozenge\)}\ \textsc{unknown}: undecided};
+
+% 4. Two repair routes share the same re-certification gate.
+\draw[->,figteal,line width=.65pt] (82.5,27.5)--(82.5,24.7);
+\node[stagebadge] at (2.8,24.2) {4};
+\node[anchor=west,stage] at (6.8,24.2) {REPAIR AND RE-CHECK};
+
+\path[draw=figteal,fill=figtealsoft,rounded corners=1.2pt,line width=.55pt]
+  (1,13.1) rectangle (122.5,21.5);
+\node[anchor=west,head,text=figteal] at (3.0,18.5) {DIRECT};
+\node[anchor=west,math] at (24.5,18.4)
+  {mathematical model \(A\) \(\longleftrightarrow\) solver code \(\widehat P\)};
+\node[anchor=west,note] at (24.5,14.8)
+  {reconstruct either artifact from the other, then execute and capture};
+\draw[->,figteal,line width=.75pt] (122.5,17.3)--(126,17.3);
+
+\path[draw=figcopper,fill=figcoppersoft,rounded corners=1.2pt,line width=.55pt]
+  (1,2.0) rectangle (122.5,10.4);
+\node[anchor=west,head,text=figcopper] at (3.0,7.4) {GUIDED};
+\node[anchor=west,math] at (24.5,7.3)
+  {counterexample \(\longrightarrow\) revised solver code \(\widehat P'_k\)};
+\node[anchor=west,note] at (24.5,3.7)
+  {revise, recapture and reconstruct both artifacts};
+\draw[->,figcopper,line width=.75pt] (122.5,6.2)--(126,6.2);
+
+\path[draw=figteal,fill=white,rounded corners=1.2pt,line width=.7pt]
+  (126,2.0) rectangle (164,21.5);
+\node[anchor=west,head] at (128.3,18.5) {RE-CHECK};
+\node[anchor=west,note] at (128.3,14.2) {Source \(\checkmark\)};
+\node[anchor=west,note] at (146.0,14.2) {Region \(\checkmark\)};
+\node[anchor=west,note] at (128.3,10.8) {Objective \(\checkmark\)};
+\node[anchor=west,note] at (146.0,10.8) {Report \(\checkmark\)};
+\draw[figrule,line width=.4pt] (128,8.4)--(162,8.4);
+\node[anchor=west,note] at (128.3,6.0) {all required checks pass};
+\node[anchor=west,note] at (128.3,3.2) {adopt; else retain prior};
+
+\end{tikzpicture}
+\endgroup
